@@ -1,7 +1,8 @@
-#include <iostream>
+#include "includes/Vector.hpp"
 
 int main()
 {
-    std::cout << "Hello world !" << std::endl;
+    ft::Vector<int> test;
+    ft::Vector<int> test2(5);
     return 0;
 }
