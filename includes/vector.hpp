@@ -17,7 +17,7 @@ namespace ft
 		typedef value_type& reference;
 		typedef const value_type& const_reference;
 		typedef size_t	size_type;
-		// typedef VectorIterator<Vector<T> > iterator;
+		typedef VectorIterator<Vector<T> > iterator;
 
 	private:
 		size_t _size;
@@ -53,8 +53,12 @@ namespace ft
 		}
 
 		//Iterator
-		VectorIterator begin(){
-			return (VectorIterator(array));
+		iterator begin(){
+			return (iterator(array));
+		}
+		
+		iterator end(){
+			return (iterator(array + _size));
 		}
 
 		//Capacity
@@ -85,6 +89,32 @@ namespace ft
 		}
 
 		//Modifier
+		template <class InputIterator>
+		void assign(InputIterator first, InputIterator last){
+			iterator tmp = first;
+			size_t size = 0;
+			reference val = *first;
+
+			for (; tmp != last; ++tmp)
+				size++;
+			if (size > _capacity)
+				reAlloc(size);
+			for (size_t i = 0; i < size; i++)
+			{
+				val = *first++;
+				_alloc.construct(array + i, val);
+			}
+			_size = size;
+		}
+
+		void assign(size_type n, const_reference val){
+			if (_capacity < n)
+				reAlloc(n);
+			for (size_t i = 0; i < n; i++)
+				_alloc.construct(array + i, val);
+			_size = n;
+		}
+
 		void push_back(const_reference val){
 			if (_size >= _capacity)
 			{
@@ -100,6 +130,99 @@ namespace ft
 		void pop_back(void){
 			_size--;
 			array[_size].~T();
+		}
+
+		iterator insert(iterator position, const_reference val){
+			size_t idx = 0;
+			value_type* newArray;
+
+			for (iterator it = this->begin(); it != position; ++it)
+				idx++;
+			if (_size >= _capacity)
+			{
+				if (_size == 0)
+					_capacity = 1;
+				else
+					_capacity *= 2;
+			}
+			_size++;
+			newArray = _alloc.allocate(_capacity);
+			for (size_t i = 0; i < _size; i++)
+			{
+				if (i == idx)
+					_alloc.construct(newArray + i, val);
+				else
+					newArray[i] = array[i];
+			}
+			_alloc.deallocate(array, _capacity);
+			array = newArray;
+			return (this->begin());
+		}
+
+		void insert(iterator position, size_type n, const_reference val){
+			size_t idx = 0;
+			value_type* newArray;
+
+			for (iterator it = this->begin(); it != position; ++it)
+				idx++;
+			if (_size >= _capacity)
+			{
+				if (_size == 0)
+					_capacity = n;
+				else if (_capacity * 2 < _size + n)
+					_capacity = _size + n;
+				else
+					_capacity *= 2;
+			}
+			_size += n;
+			newArray = _alloc.allocate(_capacity);
+			for (size_t i = 0; i < _size; i++)
+			{
+				if (i == idx)
+					for (; i < n; i++)
+						_alloc.construct(newArray + i, val);
+				else
+					newArray[i] = array[i];					
+			}
+			_alloc.deallocate(array, _capacity);
+			array = newArray;			
+		}
+
+		template <class InputIterator>
+		void inserte(iterator position, InputIterator first, InputIterator last){
+			size_t n = 0;
+			size_t idx = 0;
+			value_type* newArray;
+			reference val = *first;
+
+			for (InputIterator tmp = first; tmp != last; ++tmp)
+				n++;
+			for (iterator it = this->begin(); it != position; ++it)
+				idx++;
+			if (_size >= _capacity)
+			{
+				if (_size == 0)
+					_capacity = n;
+				else if (_capacity * 2 < _size + n)
+					_capacity = _size + n;
+				else
+					_capacity *= 2;
+			}
+			_size += n;
+			newArray = _alloc.allocate(_capacity);
+			for (size_t i = 0; i < _size; i++)
+			{
+				if (i == idx)
+					for (; i < n; i++)
+					{
+						_alloc.construct(newArray + i, val);
+						val = *first++;
+					}
+				else
+					newArray[i] = array[i];					
+			}
+			_alloc.deallocate(array, _capacity);
+			array = newArray;
 		}
 
 		void clear(void){

@@ -3,16 +3,27 @@
 
 int main()
 {
-    std::vector<long long> myvector;
-    ft::Vector<long long> test(5, 2);
-    std::vector<long long>::iterator it;
-    std::vector<long long>::iterator itb;
-    
-    for (int i=0; i<100; i++) test.push_back(i);
+    ft::Vector<int> myvector (3,100);
+    ft::Vector<int>::iterator it;
 
-    std::cout << "size: " << test.size() << '\n';
-    std::cout << "capacity: " << test.capacity() << '\n';
-    std::cout << "max_size: " << test.max_size() << '\n';
-    std::cout << test.begin() << std::endl;
+    it = myvector.begin();
+    it = myvector.insert(it , 200 );
+
+    myvector.insert(it, 2, 300);
+
+    // "it" no longer valid, get a new one:
+    it = myvector.begin();
+
+    std::vector<int> anothervector(2,400);
+    myvector.inserte(it+2,anothervector.begin(),anothervector.end());
+
+    int myarray [] = { 501,502,503 };
+    myvector.inserte(myvector.begin(), myarray, myarray+3);
+
+    std::cout << "myvector contains:";
+    for (it=myvector.begin(); it<myvector.end(); it++)
+        std::cout << ' ' << *it;
+    std::cout << '\n';
+
     return 0;
 }
