@@ -135,94 +135,150 @@ namespace ft
 		iterator insert(iterator position, const_reference val){
 			size_t idx = 0;
 			value_type* newArray;
+			size_t newCapacity = 0;
+			size_t y = 0;
 
 			for (iterator it = this->begin(); it != position; ++it)
 				idx++;
 			if (_size >= _capacity)
 			{
 				if (_size == 0)
-					_capacity = 1;
+					newCapacity = 1;
 				else
-					_capacity *= 2;
+					newCapacity = _capacity * 2;
 			}
 			_size++;
-			newArray = _alloc.allocate(_capacity);
+			newArray = _alloc.allocate(newCapacity);
 			for (size_t i = 0; i < _size; i++)
 			{
 				if (i == idx)
 					_alloc.construct(newArray + i, val);
 				else
-					newArray[i] = array[i];
+					newArray[i] = array[y++];
 			}
 			_alloc.deallocate(array, _capacity);
+			if (newCapacity)
+				_capacity = newCapacity;
 			array = newArray;
-			return (this->begin());
+			return (iterator(array));
 		}
 
-		void insert(iterator position, size_type n, const_reference val){
+		void insert(iterator position, size_type n, const value_type& val){
 			size_t idx = 0;
 			value_type* newArray;
+			size_t newCapacity = 0;
+			size_t y = 0;
+			size_t i = 0;
 
 			for (iterator it = this->begin(); it != position; ++it)
 				idx++;
 			if (_size >= _capacity)
 			{
 				if (_size == 0)
-					_capacity = n;
+					newCapacity = n;
 				else if (_capacity * 2 < _size + n)
-					_capacity = _size + n;
+					newCapacity = _size + n;
 				else
-					_capacity *= 2;
+					newCapacity = _capacity * 2;
 			}
 			_size += n;
-			newArray = _alloc.allocate(_capacity);
-			for (size_t i = 0; i < _size; i++)
+			newArray = _alloc.allocate(newCapacity);
+			while(i < _size)
 			{
 				if (i == idx)
-					for (; i < n; i++)
-						_alloc.construct(newArray + i, val);
+					for (size_t u = 0; u < n; u++)
+						_alloc.construct(newArray + i++, val);
 				else
-					newArray[i] = array[i];					
+					newArray[i++] = array[y++];
 			}
 			_alloc.deallocate(array, _capacity);
+			if (newCapacity)
+				_capacity = newCapacity;
 			array = newArray;			
 		}
 
-		template <class InputIterator>
-		void inserte(iterator position, InputIterator first, InputIterator last){
+		void insert(iterator position, iterator first, iterator last){
 			size_t n = 0;
 			size_t idx = 0;
+			size_t y = 0;
+			size_t i = 0;
+			size_t newCapacity = 0;
 			value_type* newArray;
 			reference val = *first;
 
-			for (InputIterator tmp = first; tmp != last; ++tmp)
+			for (iterator tmp = first; tmp != last; ++tmp)
 				n++;
 			for (iterator it = this->begin(); it != position; ++it)
 				idx++;
 			if (_size >= _capacity)
 			{
 				if (_size == 0)
-					_capacity = n;
+					newCapacity = n;
 				else if (_capacity * 2 < _size + n)
-					_capacity = _size + n;
+					newCapacity = _size + n;
 				else
-					_capacity *= 2;
+					newCapacity = _capacity * 2;
 			}
 			_size += n;
-			newArray = _alloc.allocate(_capacity);
-			for (size_t i = 0; i < _size; i++)
+			newArray = _alloc.allocate(newCapacity);
+			while (i < _size)
 			{
 				if (i == idx)
-					for (; i < n; i++)
+					for (size_t u = 0; u < n; u++)
 					{
-						_alloc.construct(newArray + i, val);
 						val = *first++;
+						_alloc.construct(newArray + i++, val);
 					}
 				else
-					newArray[i] = array[i];					
+					newArray[i++] = array[y++];					
 			}
 			_alloc.deallocate(array, _capacity);
+			if (newCapacity)
+				_capacity = newCapacity;
 			array = newArray;
+		}
+
+		//Erase
+		iterator erase(iterator position){
+			size_t i = 0;
+			size_t y = 0;
+			value_type* newArray;
+
+			newArray = _alloc.allocate(_capacity);
+			for (iterator it = this->begin(); it != this->end(); ++it)
+			{
+				if (it != position)
+					newArray[i++] = array[y];
+				y++;
+			}
+			_alloc.deallocate(array, _capacity);
+			_size--;
+			array = newArray;
+			return (iterator(array));
+		}
+
+		iterator erase(iterator first, iterator last){
+			value_type* newArray;
+			size_t y = 0;
+			size_t i = 0;
+			iterator it;
+
+			newArray = _alloc.allocate(_capacity);
+			for (it = this->begin(); it != this->end(); ++it)
+			{
+				while (it == first && first != last)
+				{
+					y++;
+					first++;
+					it++;
+				}
+				newArray[i++] = array[y++];
+			}
+			_alloc.deallocate(array, _capacity);
+			_size -= y - i;
+			array = newArray;
+			std::cout << "y: " << y - i << std::endl;
+			return (iterator(array));
 		}
 
 		void clear(void){

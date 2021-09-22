@@ -3,27 +3,20 @@
 
 int main()
 {
-    ft::Vector<int> myvector (3,100);
+    ft::Vector<int> myvector;
     ft::Vector<int>::iterator it;
+    ft::Vector<int>::iterator it2;
+    ft::Vector<int>::iterator it3;
 
-    it = myvector.begin();
-    it = myvector.insert(it , 200 );
-
-    myvector.insert(it, 2, 300);
-
-    // "it" no longer valid, get a new one:
-    it = myvector.begin();
-
-    std::vector<int> anothervector(2,400);
-    myvector.inserte(it+2,anothervector.begin(),anothervector.end());
-
-    int myarray [] = { 501,502,503 };
-    myvector.inserte(myvector.begin(), myarray, myarray+3);
-
-    std::cout << "myvector contains:";
-    for (it=myvector.begin(); it<myvector.end(); it++)
-        std::cout << ' ' << *it;
-    std::cout << '\n';
-
+    for (size_t i = 0; i < 10; i++)
+        myvector.push_back(i);
+    
+    it = myvector.begin() + 4;
+    it2 = myvector.begin() + 6;
+    it = myvector.erase(it, it2);
+    // it = myvector.begin();
+    for (; it != myvector.end(); ++it)
+        std::cout << *it << std::endl;
+    
     return 0;
 }
