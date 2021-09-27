@@ -2,11 +2,13 @@
 #include <math.h>
 #include "VectorIterator.hpp"
 
-
 namespace ft
 {
 	template <class Vector>
 	class VectorIterator;
+	
+	template <class Iter>
+	class VectorReverseIter;
 
 	template < class T, class Alloc = std::allocator<T> >
     class Vector
@@ -18,6 +20,7 @@ namespace ft
 		typedef const value_type& const_reference;
 		typedef size_t	size_type;
 		typedef VectorIterator<Vector<T> > iterator;
+		typedef VectorReverseIter<iterator> reverse_iterator;
 
 	private:
 		size_t _size;
@@ -61,14 +64,31 @@ namespace ft
 			return (iterator(array + _size));
 		}
 
-		//Capacity
-		value_type size(void) const {return this->_size;}
+		reverse_iterator rbegin(){
+			return (end() - 1);
+		}
 
-		value_type capacity(void) const {return this->_capacity;}
+		reverse_iterator rend(){
+			return (begin() - 1);
+		}
+
+		//Capacity
+		size_type size(void) const {return this->_size;}
+
+		size_type capacity(void) const {return this->_capacity;}
 
 		size_type max_size(void) const {return (_alloc.max_size());}
 
 		bool empty(void) const {return _size == 0;}
+
+		void resize(size_type n, value_type val = value_type()){
+			if (n > _capacity)
+				reAlloc(n);
+			_size = n;
+			if (val)
+				for (size_t i = 0; i < n; i++)
+					_alloc.construct(array + i, val);
+		}
 
 		void reserve(size_type n){
 			value_type* tmp ;
@@ -89,6 +109,7 @@ namespace ft
 		}
 
 		//Modifier
+			//ASSIGN
 		template <class InputIterator>
 		void assign(InputIterator first, InputIterator last){
 			iterator tmp = first;
@@ -114,7 +135,7 @@ namespace ft
 				_alloc.construct(array + i, val);
 			_size = n;
 		}
-
+			//PUSH_BACK
 		void push_back(const_reference val){
 			if (_size >= _capacity)
 			{
@@ -126,12 +147,12 @@ namespace ft
 			_alloc.construct(array + _size, val);
 			_size++;
 		}
-
+			//POP_BACK
 		void pop_back(void){
 			_size--;
 			array[_size].~T();
 		}
-
+			//INSERT
 		iterator insert(iterator position, const_reference val){
 			size_t idx = 0;
 			value_type* newArray;
@@ -162,7 +183,7 @@ namespace ft
 			array = newArray;
 			return (iterator(array));
 		}
-
+			//INSERT
 		void insert(iterator position, size_type n, const value_type& val){
 			size_t idx = 0;
 			value_type* newArray;
@@ -238,12 +259,15 @@ namespace ft
 			array = newArray;
 		}
 
-		//Erase
+			//ERASE
 		iterator erase(iterator position){
 			size_t i = 0;
 			size_t y = 0;
+			size_t ret = 0;
 			value_type* newArray;
 
+			for (iterator it = this->begin(); it != position; ++it)
+				ret++;
 			newArray = _alloc.allocate(_capacity);
 			for (iterator it = this->begin(); it != this->end(); ++it)
 			{
@@ -254,17 +278,19 @@ namespace ft
 			_alloc.deallocate(array, _capacity);
 			_size--;
 			array = newArray;
-			return (iterator(array));
+			return (iterator(array) + ret);
 		}
 
 		iterator erase(iterator first, iterator last){
 			value_type* newArray;
 			size_t y = 0;
 			size_t i = 0;
-			iterator it;
+			size_t ret = 0;
 
+			for (iterator it = this->begin(); it != first; ++it)
+				ret++;
 			newArray = _alloc.allocate(_capacity);
-			for (it = this->begin(); it != this->end(); ++it)
+			for (iterator it = this->begin(); it != this->end(); ++it)
 			{
 				while (it == first && first != last)
 				{
@@ -275,12 +301,25 @@ namespace ft
 				newArray[i++] = array[y++];
 			}
 			_alloc.deallocate(array, _capacity);
-			_size -= y - i;
+			_size = i;
 			array = newArray;
-			std::cout << "y: " << y - i << std::endl;
-			return (iterator(array));
+			return (iterator(array) + ret);
 		}
+			//SWAP
+		void swap(Vector& x){
+			size_type size = x._size;
+			size_type capacity = x._capacity;
+			value_type* arr = x.array;
 
+			x._size = this->_size;
+			x._capacity = this->_capacity;
+			x.array = this->array;
+
+			this->_size = size;
+			this->_capacity = capacity;
+			this->array = arr;
+		}
+			//CLEAR
 		void clear(void){
 			for (size_t i = 0; i < _size; i++)
 				array[i].~T();

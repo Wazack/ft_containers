@@ -1,22 +1,24 @@
 #include "includes/Vector.hpp"
 #include <vector>
 
-int main()
+int main ()
 {
-    ft::Vector<int> myvector;
-    ft::Vector<int>::iterator it;
-    ft::Vector<int>::iterator it2;
-    ft::Vector<int>::iterator it3;
+    ft::Vector<int> test;
+    std::vector<int> rvector;
+    std::vector<int>::reverse_iterator it;
+    std::vector<int>::iterator itd;
+    ft::Vector<int>::reverse_iterator rit;
+    ft::Vector<int>::iterator ritd;
 
     for (size_t i = 0; i < 10; i++)
-        myvector.push_back(i);
-    
-    it = myvector.begin() + 4;
-    it2 = myvector.begin() + 6;
-    it = myvector.erase(it, it2);
-    // it = myvector.begin();
-    for (; it != myvector.end(); ++it)
-        std::cout << *it << std::endl;
-    
+    {
+        rvector.push_back(i);
+        test.push_back(i);
+    }
+    it = rvector.rbegin();
+    rit = test.rbegin();
+    std::cout << "it: " << it[1] << std::endl;
+    std::cout << "rit: " << rit[1] << std::endl;
+
     return 0;
 }
