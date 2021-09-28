@@ -350,5 +350,66 @@ namespace ft
 		reference back(){return (array[_size - 1]);}
 		
 		const_reference back() const{return (array[_size - 1]);}
+
+		allocator_type get_allocator() const{return _alloc;}
     };
+
+	template <class T, class Alloc>
+	bool operator==(const Vector<T, Alloc>& lhs, const Vector<T, Alloc>& rhs){
+		if (lhs.size() != rhs.size())
+			return false;
+		for (size_t i = 0; i < lhs.size(); i++)
+			if (lhs[i] != rhs[i])
+				return false;		
+		return true;
+	}
+
+	template <class T, class Alloc>
+	bool operator!=(const Vector<T, Alloc>& lhs, const Vector<T, Alloc>& rhs){
+		if (lhs.size() != rhs.size())
+			return true;
+		for (size_t i = 0; i < lhs.size(); i++)
+			if (lhs[i] != rhs[i])
+				return true;
+		return false;
+	}
+	
+	template <class T, class Alloc>
+	bool operator<(const Vector<T, Alloc>& lhs, const Vector<T, Alloc>& rhs){
+		for (size_t i = 0; i < lhs.size(); i++)
+			if (lhs[i] < rhs[i])
+				return true;
+		if (lhs.size() < rhs.size())
+			return true;
+		return false;		
+	}
+
+	template <class T, class Alloc>
+	bool operator<=(const Vector<T, Alloc>& lhs, const Vector<T, Alloc>& rhs){
+		for (size_t i = 0; i < lhs.size(); i++)
+			if (lhs[i] <= rhs[i])
+				return true;
+		if (lhs.size() < rhs.size())
+			return true;
+		return false;
+	}
+
+	template <class T, class Alloc>
+	bool operator>(const Vector<T, Alloc>& lhs, const Vector<T, Alloc>& rhs){
+		for (size_t i = 0; i < lhs.size(); i++)
+			if (lhs[i] > rhs[i])
+				return true;
+		return false;		
+	}
+
+	template <class T, class Alloc>
+	bool operator>=(const Vector<T, Alloc>& lhs, const Vector<T, Alloc>& rhs){
+		for (size_t i = 0; i < lhs.size(); i++)
+			if (lhs[i] >= rhs[i])
+				return true;
+		return false;		
+	}
+
+	template <class T, class Alloc>
+	void swap(Vector<T, Alloc>& lhs, Vector<T, Alloc>& rhs){lhs.swap(rhs);}
 }
