@@ -122,7 +122,7 @@ namespace ft
 
 	public:
 		VectorReverseIter() : _it(NULL){}
-		VectorReverseIter(iterator_type it) : _it(it){}
+		explicit VectorReverseIter(iterator_type it) : _it(it){}
 		VectorReverseIter(VectorReverseIter const & src) : _it(src._it){}
 		~VectorReverseIter(){}
 
@@ -181,4 +181,28 @@ namespace ft
 		}
 		reference operator[](difference_type __n) const{return *(*this + __n);}
 	};
+
+	template <class Iterator>
+	bool operator==(const VectorReverseIter<Iterator>& lhs, const VectorReverseIter<Iterator>& rhs){return lhs.base() == rhs.base();}
+	
+	template <class Iterator>
+	bool operator!=(const VectorReverseIter<Iterator>& lhs, const VectorReverseIter<Iterator>& rhs){return lhs.base() != rhs.base();}
+	
+	template <class Iterator>
+	bool operator<(const VectorReverseIter<Iterator>& lhs, const VectorReverseIter<Iterator>& rhs){return lhs.base() < rhs.base();}
+	
+	template <class Iterator>
+	bool operator<=(const VectorReverseIter<Iterator>& lhs, const VectorReverseIter<Iterator>& rhs){return lhs.base() <= rhs.base();}
+	
+	template <class Iterator>
+	bool operator>(const VectorReverseIter<Iterator>& lhs, const VectorReverseIter<Iterator>& rhs){return lhs.base() > rhs.base();}
+	
+	template <class Iterator>
+	bool operator>=(const VectorReverseIter<Iterator>& lhs, const VectorReverseIter<Iterator>& rhs){return lhs.base() >= rhs.base();}
+
+	template <class Iter>
+	VectorReverseIter<Iter> operator+(typename VectorReverseIter<Iter>::difference_type n, const VectorReverseIter<Iter>& it){return it.base() - n;}
+
+	template <class Iterator>
+	typename VectorReverseIter<Iterator>::difference_type operator-(const VectorReverseIter<Iterator>& lhs, const VectorReverseIter<Iterator>& rhs){return rhs.base() - lhs.base();}
 }
