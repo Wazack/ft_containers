@@ -1,3 +1,6 @@
+#ifndef UTILITY_HPP
+#define UTILITY_HPP
+
 namespace ft
 {
 template <class T1, class T2>
@@ -9,17 +12,15 @@ struct pair
 	T1 first;
 	T2 second;
 
-	pair() : first(NULL), second(NULL){}
-	pair(const first_type& a, const second_type& b) : first(a), second(b){}
+	pair() : first(), second(){}
+	pair(first_type const& a, second_type const& b) : first(a), second(b){}
 	template <class U, class V>
-	pair(const pair<U, V>& pr){
-		first = pr.first;
-		second = pr.second;
-	}
+	pair(const pair<U, V>& pr) : first(pr.first), second(pr.second){}
 
-	pair& operator=(const pair& rhs){
-		first = rhs.first;
-		second = rhs.second;
+	pair& operator=(pair const& rhs)
+	{
+		this->first = rhs.first;
+		this->second = rhs.second;
 		return *this;
 	}
 };
@@ -47,4 +48,12 @@ pair<T1, T2> make_pair(T1 x, T2 y)
 {
 	return (pair<T1, T2>(x, y));
 }
+
+template <class value_type>
+struct bst{
+	value_type data;
+	bst *left;
+	bst *right;
+};
 }
+#endif

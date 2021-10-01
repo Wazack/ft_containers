@@ -1,26 +1,31 @@
+#ifndef VECTOR_HPP
+#define VECTOR_HPP
+
 #include <iostream>
 #include <math.h>
 #include "VectorIterator.hpp"
+#include "Iterator.hpp"
 
 namespace ft
 {
 	template <class Vector>
 	class VectorIterator;
-	
-	template <class Iter>
-	class VectorReverseIter;
 
 	template < class T, class Alloc = std::allocator<T> >
     class Vector
     {
     public:
-		typedef T value_type;
-		typedef Alloc allocator_type;
-		typedef value_type& reference;
-		typedef const value_type& const_reference;
-		typedef size_t	size_type;
+		typedef T					value_type;
+		typedef Alloc				allocator_type;
+		typedef typename allocator_type::reference	reference;
+		typedef typename allocator_type::const_reference	const_reference;
+		typedef typename allocator_type::pointer	pointer;
+		typedef typename allocator_type::const_pointer	const_pointer;
+		typedef std::random_access_iterator_tag iterator_category;
 		typedef VectorIterator<Vector<T> > iterator;
-		typedef VectorReverseIter<iterator> reverse_iterator;
+		typedef reverse_iterator<iterator> reverse_iterator;
+		typedef ptrdiff_t difference_type;
+		typedef size_t	size_type;
 
 	private:
 		size_t _size;
@@ -413,3 +418,5 @@ namespace ft
 	template <class T, class Alloc>
 	void swap(Vector<T, Alloc>& lhs, Vector<T, Alloc>& rhs){lhs.swap(rhs);}
 }
+
+#endif
