@@ -31,6 +31,22 @@ public:
 	}
 
 	reference operator*() const {return _bst->data;}
+
+	MapIterator & operator++(){
+		if (_bst->right == NULL)
+		{
+			while (_bst->data.first > _bst->parent->data.first)
+				_bst = _bst->parent;
+			_bst = _bst->parent;
+		}
+		else
+			_bst = _bst->right;
+		return (*this);
+	}
+
+	bool operator!=(MapIterator const & rhs) const{
+		return _bst->data.first != rhs._bst->data.first;
+	}
 };
 
 

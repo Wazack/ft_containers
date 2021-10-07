@@ -44,7 +44,7 @@ namespace ft
 
 	public:
 		explicit Map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _alloc(alloc), _comp(comp), _bst(NULL){}
-		// ~Map();
+		~Map(){}
 
 		//Iterator
 		iterator begin(){return iterator(begin_tree(_bst));}
@@ -61,7 +61,8 @@ namespace ft
 		allocator_type get_allocator() const{return _alloc;}
 
 		ft::pair<iterator, bool> insert(const value_type& val){
-			_bst = insert_util(_bst, data);
+			_bst = insert_util(_bst, val, NULL);
+			return (ft::pair<iterator, bool>(begin(), true));
 		}
 
 	public: //Change to private
@@ -86,26 +87,30 @@ namespace ft
 
 		tree* end_tree(tree* bst){
 			while (bst->right)
+			{
 				bst = bst->right;
+			}
+			bst = bst->right;
 			return (bst);
 		}
 
 		//Tree utility
-		tree* getNewNode(value_type data){
+		tree* getNewNode(value_type data, tree* parent){
 			tree* newNode = new tree();
 			newNode->left = newNode->right = NULL;
 			newNode->data = data;
+			newNode->parent = parent;
 
 			return newNode;
 		}
 
-		tree* insert_util(tree* bst, value_type data){
+		tree* insert_util(tree* bst, value_type data, tree *parent){
 			if (bst == NULL)
-				bst = getNewNode(data);
+				bst = getNewNode(data, parent);
 			else if (data.first <= bst->data.first)
-				bst->left = insert(bst->left, data);
+				bst->left = insert_util(bst->left, data, bst);
 			else
-				bst->right = insert(bst->right, data);
+				bst->right = insert_util(bst->right, data, bst);
 			return bst;
 		}
 	};

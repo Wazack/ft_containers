@@ -54,6 +54,7 @@ struct bst{
 	value_type data;
 	bst *left;
 	bst *right;
+	bst *parent;
 };
 }
 #endif
