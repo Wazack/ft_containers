@@ -7,7 +7,7 @@ CC			= clang++
 
 RM			= rm -f
 
-%.o: %.cpp	includes/Vector.hpp includes/VectorIterator.hpp includes/MapIterator.hpp includes/Map.hpp includes/Utility.hpp
+%.o: %.cpp	includes/Vector.hpp includes/VectorIterator.hpp includes/MapIterator.hpp includes/Map.hpp includes/Utility.hpp includes/stack.hpp
 			$(CC) $(FLAGS) -c $< -o $@
 
 all:		$(NAME)
