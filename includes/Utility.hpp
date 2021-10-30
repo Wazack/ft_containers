@@ -17,12 +17,12 @@ struct pair
 	template <class U, class V>
 	pair(const pair<U, V>& pr) : first(pr.first), second(pr.second){}
 
-	pair& operator=(pair const& rhs)
-	{
-		this->first = rhs.first;
-		this->second = rhs.second;
-		return *this;
-	}
+	// pair& operator=(pair const& rhs)
+	// {
+	// 	this->first = rhs.first;
+	// 	this->second = rhs.second;
+	// 	return *this;
+	// }
 };
 
 template <class T1, class T2>
