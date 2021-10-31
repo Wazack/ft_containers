@@ -40,13 +40,14 @@ private:
 	size_type		_size;
 
 public:
-	Bst(const tree_alloc& alloc = tree_alloc()) : _alloc_tree(alloc){
+	Bst(const tree_alloc& alloc = tree_alloc()) : _alloc_tree(alloc), _size(0){
 		_root = _alloc_tree.allocate(1);
 		_alloc_tree.construct(_root, tree(_root, _root, _root));
+		_root = nullptr;
 	}
 
 	void insert(const value_type& val){ // retourne ft::pair
-		tree_pointer n = _alloc_tree.allocate(1);
+		// tree_pointer n;
 		tree_pointer tmp = _root;
 		tree_pointer buf = nullptr; //Parent de racine = NULL
 		int i = 0; //A retirer
@@ -54,20 +55,20 @@ public:
 		while (tmp != nullptr)
 		{
 			buf = tmp;
-			if (n->value.first < tmp->value.first)
+			if (val.first < tmp->value.first)
 				tmp = tmp->left;
-			else if (n->value.first > tmp->value.first)
+			else if (val.first > tmp->value.first)
 				tmp = tmp->right;
 			else
 			{
-				delete n;
 				std::cout << "Already exist" << std::endl; // A retirer
 				return ;//Return false ft::pair
 			}
 			i++;
 		}
+		tmp = _alloc_tree.allocate(1);
+		_alloc_tree.construct(tmp, tree(val, buf, nullptr, nullptr));
 		std::cout << i << std::endl;
-		(void)val;
 	}
 
 };
