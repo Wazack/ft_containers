@@ -6,11 +6,11 @@
 #include "includes/Bst.hpp"
 // int main ()
 // {
-//     ft::Map<char, int> mymap;
-//     ft::Map<char, int> map;
-//     ft::Map<char, int>::iterator it;
-//     ft::Map<char, int>::iterator ite;
-//     ft::pair<ft::Map<char, int>::iterator, bool> ret;
+    std::map<char, int> mymap;
+//     std::map<char, int> map;
+//     std::map<char, int>::iterator it;
+//     std::map<char, int>::iterator ite;
+//     ft::pair<std::map<char, int>::iterator, bool> ret;
 
 //     ret = mymap.insert(ft::pair<char, int>('b', 3));
 //     ret = mymap.insert(ft::pair<char, int>('a', 2));
@@ -25,7 +25,7 @@
 //     std::cout << (*it).first << ", " << (*it).second << std::endl;
 //     ++it;
 //     std::cout << (*ite).first << ", " << (*ite).second << std::endl;
-//     // for (ft::Map<char, int>::iterator tt = mymap.begin(); tt != mymap.end(); ++tt)
+//     // for (std::map<char, int>::iterator tt = mymap.begin(); tt != mymap.end(); ++tt)
 //     // {
 //     //     std::cout << (*tt).first << " " << (*tt).second << std::endl;
 //     // }
@@ -35,7 +35,10 @@
 
 int main(){
     ft::Bst<ft::pair<char, int> > test;
+    ft::Bst<ft::pair<char, int> >::iterator it;
 
     test.insert(ft::pair<char, int>('b', 2));
     test.insert(ft::pair<char, int>('c', 2));
+
+    it = test.begin();
 }

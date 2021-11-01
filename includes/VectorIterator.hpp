@@ -11,12 +11,12 @@ namespace ft
 	class VectorIterator
 	{
 	public:
-		typedef	Iter		iterator_type;
-		typedef	typename iterator_traits<iterator_type>::iterator_category iterator_category;
-		typedef	typename iterator_traits<iterator_type>::value_type value_type;
-		typedef	typename iterator_traits<iterator_type>::difference_type difference_type;
-		typedef	typename iterator_traits<iterator_type>::pointer pointer;
-		typedef	typename iterator_traits<iterator_type>::reference reference;
+		typedef	Iter														iterator_type;
+		typedef	typename iterator_traits<iterator_type>::iterator_category	iterator_category;
+		typedef	typename iterator_traits<iterator_type>::value_type 		value_type;
+		typedef	typename iterator_traits<iterator_type>::difference_type 	difference_type;
+		typedef	typename iterator_traits<iterator_type>::pointer 			pointer;
+		typedef	typename iterator_traits<iterator_type>::reference 			reference;
 
 	private:
 		pointer array;

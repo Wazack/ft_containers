@@ -1,8 +1,12 @@
 #include <iostream>
 #include "Utility.hpp"
+#include "BstIterator.hpp"
 
 namespace ft
 {
+
+template <class T>
+class BstIterator; 
 
 template <class T>
 struct tree
@@ -20,23 +24,27 @@ public:
 
 	tree(tree* parent = nullptr, tree* left = nullptr, tree* right = nullptr) : value(), parent(parent), left(left), right(right){} 
 
-	tree(const value_type& val, tree* parent = nullptr, tree* left = nullptr, tree* right = nullptr) : value(val), parent(parent), left(left), right(right){}
+	tree(const value_type& val, tree* parent, tree* left, tree* right) : value(val), parent(parent), left(left), right(right){}
 };
 
 template <class T, class Compare = std::less<T>, class Alloc = std::allocator<T> >
 class Bst
 {
 public:
-	typedef T						value_type;
-	typedef tree<T>					tree;
-	typedef tree* 					tree_pointer;
-	typedef std::allocator<tree>	tree_alloc;
+	typedef T								value_type;
+	typedef tree<T>							tree;
+	typedef tree*							pointer;
+	typedef tree&							reference;
+	typedef std::allocator<tree>			tree_alloc;
+	typedef BstIterator<Bst<tree> >			iterator;
+	typedef std::bidirectional_iterator_tag	iterator_category;
+	typedef ptrdiff_t						difference_type;
 
 	typedef size_t		size_type;
 
 private:
 	tree_alloc		_alloc_tree;
-	tree_pointer	_root;
+	pointer	_root;
 	size_type		_size;
 
 public:
@@ -46,31 +54,57 @@ public:
 		_root = nullptr;
 	}
 
-	void insert(const value_type& val){ // retourne ft::pair
-		// tree_pointer n;
-		tree_pointer tmp = _root;
-		tree_pointer buf = nullptr; //Parent de racine = NULL
-		int i = 0; //A retirer
+	~Bst(){}
 
-		while (tmp != nullptr)
-		{
-			buf = tmp;
-			if (val.first < tmp->value.first)
-				tmp = tmp->left;
-			else if (val.first > tmp->value.first)
-				tmp = tmp->right;
-			else
-			{
-				std::cout << "Already exist" << std::endl; // A retirer
-				return ;//Return false ft::pair
-			}
-			i++;
-		}
-		tmp = _alloc_tree.allocate(1);
-		_alloc_tree.construct(tmp, tree(val, buf, nullptr, nullptr));
-		std::cout << i << std::endl;
+	iterator begin(){
+		return (iterator(_root));
 	}
 
+	bool insert(const value_type& val){ //Replace by ft::pair
+		if (_root == nullptr)
+			_root = insert_util(_root, val, nullptr);
+		else
+		{
+			if (!already_exist(_root, val))
+				return false;
+			_root = insert_util(_root, val, _root->parent);
+		}
+		return true;
+	}
+
+private:
+		pointer getNewNode(value_type data, pointer parent){
+			pointer newNode = _alloc_tree.allocate(1);
+			_alloc_tree.construct(newNode, tree(data, parent, nullptr, nullptr));
+
+			return newNode;
+		}
+
+		pointer insert_util(pointer bst, value_type data, pointer parent){
+			if (bst == nullptr)
+				bst = getNewNode(data, parent);
+			else if (data.first < bst->value.first)
+				bst->left = insert_util(bst->left, data, bst);
+			else if (data.first > bst->value.first)
+				bst->right = insert_util(bst->right, data, bst);
+			return bst;
+		}
+
+		bool already_exist(pointer tree, const value_type& val){ // Replace by ft::pair
+			while (tree != nullptr)
+			{
+				if (val.first < tree->value.first)
+					tree = tree->left;
+				else if (val.first > tree->value.first)
+					tree = tree->right;
+				else
+				{
+					std::cout << "Already exist" << std::endl;
+					return false;
+				}
+			}
+			return true;
+		}
 };
 
 }
