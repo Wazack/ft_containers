@@ -1,3 +1,6 @@
+#ifndef BST_HPP
+#define BST_HPP
+
 #include <iostream>
 #include "Utility.hpp"
 #include "BstIterator.hpp"
@@ -27,28 +30,28 @@ public:
 	tree(const value_type& val, tree* parent, tree* left, tree* right) : value(val), parent(parent), left(left), right(right){}
 };
 
-template <class T, class Compare = std::less<T>, class Alloc = std::allocator<T> >
+template <class T, class Compare = std::less<T>, class Alloc = std::allocator<tree<T> > >
 class Bst
 {
 public:
-	typedef T								value_type;
-	typedef tree<T>							tree;
-	typedef tree*							pointer;
-	typedef tree&							reference;
-	typedef std::allocator<tree>			tree_alloc;
-	typedef BstIterator<Bst<tree> >			iterator;
-	typedef std::bidirectional_iterator_tag	iterator_category;
-	typedef ptrdiff_t						difference_type;
+	typedef T									value_type;
+	typedef tree<T>								tree;
+	typedef Alloc								allocator_type;
+	typedef tree&								reference;
+	typedef tree*								pointer;
+	typedef BstIterator<Bst<tree> >				iterator;
+	typedef std::bidirectional_iterator_tag		iterator_category;
+	typedef ptrdiff_t							difference_type;
 
-	typedef size_t		size_type;
+	typedef size_t								size_type;
 
 private:
-	tree_alloc		_alloc_tree;
-	pointer	_root;
+	allocator_type	_alloc_tree;
+	pointer			_root;
 	size_type		_size;
 
 public:
-	Bst(const tree_alloc& alloc = tree_alloc()) : _alloc_tree(alloc), _size(0){
+	Bst(const allocator_type& alloc = allocator_type()) : _alloc_tree(alloc), _size(0){
 		_root = _alloc_tree.allocate(1);
 		_alloc_tree.construct(_root, tree(_root, _root, _root));
 		_root = nullptr;
@@ -108,3 +111,5 @@ private:
 };
 
 }
+
+#endif

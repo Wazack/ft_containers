@@ -1,6 +1,6 @@
 #include <iostream>
 #include "Utility.hpp"
-#include "Vector.hpp"
+#include "vector.hpp"
 #include "MapIterator.hpp"
 
 namespace ft
@@ -11,7 +11,7 @@ namespace ft
 	public:
 		typedef Key											key_type;
 		typedef T 											mapped_type;
-		typedef ft::pair<Key, T> 							value_type; //const Key ?
+		typedef ft::pair<Key, T>							value_type; //const Key ?
 		typedef Compare										key_compare;
 		typedef Alloc										allocator_type;
 		typedef typename allocator_type::reference			reference;

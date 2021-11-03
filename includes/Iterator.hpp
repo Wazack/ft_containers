@@ -62,9 +62,12 @@ namespace ft
 
 		iterator_type base() const{return (_it + 1);}
 
-		reference operator*() const{return (*_it);}
+		reference operator*() const{
+			Iter tmp = _it;
+			return (*--tmp);
+		}
 
-		pointer operator->() const{return _it;};
+		pointer operator->() const{return std::addressof(operator*());};
 
 		reference operator[](difference_type n) const{ return *(*this + n);}
 
