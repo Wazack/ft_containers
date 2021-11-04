@@ -48,6 +48,49 @@ namespace ft
 			_capacity = newCapacity;			
 		}
 
+		void reAllocInsert(value_type val, size_type find, size_type n){
+			pointer	newArray;
+			size_type	y = 0;
+
+			_size += n;
+			newArray = _alloc.allocate(_size);
+			for (size_t i = 0; i < _size; i++)
+			{
+				if (i == find)
+				{
+					while (n--)
+						_alloc.construct(newArray + i++, val);
+					i--;
+				}
+				else
+					newArray[i] = array[y++];
+			}
+			_alloc.deallocate(array, _size);
+			array = newArray;
+		}
+
+		template <class InputIterator>
+		void reAllocInsertIt(size_type find, size_type n, InputIterator first){
+			pointer	newArray;
+			size_type	y = 0;
+
+			_size += n;
+			newArray = _alloc.allocate(_size);
+			for (size_t i = 0; i < _size; i++)
+			{
+				if (i == find)
+				{
+					while (n--)
+						_alloc.construct(newArray + i++, *first++);
+					i--;
+				}
+				else
+					newArray[i] = array[y++];
+			}
+			_alloc.deallocate(array, _size);
+			array = newArray;
+		}
+
 	public:
 		//Constructor
 		explicit vector(const allocator_type& alloc = allocator_type()) : _size(0), _capacity(0), _alloc(alloc), array(NULL){}
@@ -213,68 +256,35 @@ namespace ft
 		}
 			//INSERT
 		iterator insert(iterator position, const_reference val){
-			size_t idx = 0;
-			value_type* newArray;
-			size_t newCapacity = 0;
-			size_t y = 0;
-
-			for (iterator it = this->begin(); it != position; ++it)
+			size_type	idx = 0;
+			for (iterator it = begin(); it != position; ++it)
 				idx++;
 			if (_size >= _capacity)
 			{
 				if (_size == 0)
-					newCapacity = 1;
+					reAlloc(1);
 				else
-					newCapacity = _capacity * 2;
+					reAlloc(_capacity * 2);
 			}
-			_size++;
-			newArray = _alloc.allocate(newCapacity);
-			for (size_t i = 0; i < _size; i++)
-			{
-				if (i == idx)
-					_alloc.construct(newArray + i, val);
-				else
-					newArray[i] = array[y++];
-			}
-			_alloc.deallocate(array, _capacity);
-			if (newCapacity)
-				_capacity = newCapacity;
-			array = newArray;
-			return (iterator(array));
+			reAllocInsert(val, idx, 1);
+			return (begin());
 		}
 			//INSERT
 		void insert(iterator position, size_type n, const value_type& val){
 			size_t idx = 0;
-			value_type* newArray;
-			size_t newCapacity = 0;
-			size_t y = 0;
-			size_t i = 0;
 
 			for (iterator it = this->begin(); it != position; ++it)
 				idx++;
 			if (_size >= _capacity)
 			{
 				if (_size == 0)
-					newCapacity = n;
+					reAlloc(n);
 				else if (_capacity * 2 < _size + n)
-					newCapacity = _size + n;
+					reAlloc(_size + n);
 				else
-					newCapacity = _capacity * 2;
+					reAlloc(_capacity * 2);
 			}
-			_size += n;
-			newArray = _alloc.allocate(newCapacity);
-			while(i < _size)
-			{
-				if (i == idx)
-					for (size_t u = 0; u < n; u++)
-						_alloc.construct(newArray + i++, val);
-				else
-					newArray[i++] = array[y++];
-			}
-			_alloc.deallocate(array, _capacity);
-			if (newCapacity)
-				_capacity = newCapacity;
-			array = newArray;			
+			reAllocInsert(val, idx, n);		
 		}
 
 		template <class InputIterator>
@@ -282,11 +292,6 @@ namespace ft
 			insert(iterator position, InputIterator first, InputIterator last){
 			size_t n = 0;
 			size_t idx = 0;
-			size_t y = 0;
-			size_t i = 0;
-			size_t newCapacity = 0;
-			value_type* newArray;
-			reference val = *first;
 
 			for (iterator tmp = first; tmp != last; ++tmp)
 				n++;
@@ -295,32 +300,16 @@ namespace ft
 			if (_size >= _capacity)
 			{
 				if (_size == 0)
-					newCapacity = n;
+					reAlloc(n);
 				else if (_capacity * 2 < _size + n)
-					newCapacity = _size + n;
+					reAlloc(_size + n);
 				else
-					newCapacity = _capacity * 2;
+					reAlloc(_capacity * 2);
 			}
-			_size += n;
-			newArray = _alloc.allocate(newCapacity);
-			while (i < _size)
-			{
-				if (i == idx)
-					for (size_t u = 0; u < n; u++)
-					{
-						val = *first++;
-						_alloc.construct(newArray + i++, val);
-					}
-				else
-					newArray[i++] = array[y++];					
-			}
-			_alloc.deallocate(array, _capacity);
-			if (newCapacity)
-				_capacity = newCapacity;
-			array = newArray;
+			reAllocInsertIt(idx, n, first);
 		}
 
-			//ERASE
+		//ERASE
 		iterator erase(iterator position){
 			size_t i = 0;
 			size_t y = 0;

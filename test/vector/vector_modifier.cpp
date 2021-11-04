@@ -4,61 +4,59 @@
 
 static void my_vec()
 {
-	ft::vector<std::string> first;
-	ft::vector<std::string> second;
-	ft::vector<int> third;
-	int tab[] = {54, 89, 1};
+	ft::vector<int> myvector (3,100);
+	ft::vector<int>::iterator it;
 	std::cout << "\x1B[92m------Vector modifier------\033[0m" << std::endl;
 	std::cout << "\x1B[91m------ft::vector------\033[0m" << std::endl;
 
-	first.assign(7, "Bonjour");
-	std::cout << "first.assign(7, \"Bonjour\"): ";
-	for (ft::vector<std::string>::iterator it = first.begin(); it != first.end(); ++it)
-		std::cout << *it << ", ";
-	std::cout << std::endl;
-	second.assign(first.begin(), first.end() - 1);
-	std::cout << "second.assign(first.begin(), first.end() - 1): ";
-	for (ft::vector<std::string>::iterator it = second.begin(); it != second.end(); ++it)
-		std::cout << *it << ", ";
-	std::cout << std::endl;	
-	std::cout << "tab[] = {";
-	for (size_t i = 0; i < 3; i++)
-		std::cout << tab[i] << " ";
-	std::cout << "}" << std::endl;
-	third.assign(tab, tab + 3);
-	std::cout << "third.assign(tab, tab + 3): ";
-	for (ft::vector<int>::iterator it = third.begin(); it != third.end(); ++it)
-		std::cout << *it << ", ";
-	std::cout << std::endl;	
+	it = myvector.begin();
+	it = myvector.insert ( it , 200 );
+	it = myvector.insert ( it , 300 );
+	it = myvector.insert ( it , 400 );
+	it = myvector.insert ( it , 1201 );
+
+	myvector.insert (it, 200, 300);
+
+	it = myvector.begin();
+
+	// ft::vector<int> anothervector (2,400);
+	// myvector.insert (it+2,anothervector.begin(),anothervector.end());
+
+	// int myarray [] = { 501,502,503 };
+	// myvector.insert (myvector.begin(), myarray, myarray+3);
+
+	std::cout << "myvector contains:";
+	for (it=myvector.begin(); it<myvector.end(); it++)
+		std::cout << ' ' << *it;
+	std::cout << '\n';
 }
 
 static void vec()
 {
-	std::vector<std::string> first;
-	std::vector<std::string> second;
-	std::vector<int> third;
-	int tab[] = {54, 89, 1};
+	std::vector<int> myvector (3,100);
+	std::vector<int>::iterator it;
 	std::cout << "\x1B[91m------std::vector------\033[0m" << std::endl;
 
-	first.assign(7, "Bonjour");
-	std::cout << "first.assign(7, \"Bonjour\"): ";
-	for (std::vector<std::string>::iterator it = first.begin(); it != first.end(); ++it)
-		std::cout << *it << ", ";
-	std::cout << std::endl;
-	second.assign(first.begin(), first.end() - 1);
-	std::cout << "second.assign(first.begin(), first.end() - 1): ";
-	for (std::vector<std::string>::iterator it = second.begin(); it != second.end(); ++it)
-		std::cout << *it << ", ";
-	std::cout << std::endl;	
-	std::cout << "tab[] = {";
-	for (size_t i = 0; i < 3; i++)
-		std::cout << tab[i] << " ";
-	std::cout << "}" << std::endl;
-	third.assign(tab, tab + 3);
-	std::cout << "third.assign(tab, tab + 3): ";
-	for (std::vector<int>::iterator it = third.begin(); it != third.end(); ++it)
-		std::cout << *it << ", ";
-	std::cout << std::endl;	
+	it = myvector.begin();
+	it = myvector.insert ( it , 200 );
+	it = myvector.insert ( it , 300 );
+	it = myvector.insert ( it , 400 );
+	it = myvector.insert ( it , 1201 );
+
+	myvector.insert (it,200,300);
+
+	it = myvector.begin();
+
+	// std::vector<int> anothervector (2,400);
+	// myvector.insert (it+2,anothervector.begin(),anothervector.end());
+
+	// int myarray [] = { 501,502,503 };
+	// myvector.insert (myvector.begin(), myarray, myarray+3);
+
+	std::cout << "myvector contains:";
+	for (it=myvector.begin(); it<myvector.end(); it++)
+		std::cout << ' ' << *it;
+	std::cout << '\n';
 }
 
 void vector_modifier()

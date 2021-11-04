@@ -1,6 +1,6 @@
 NAME		= ft_containers
 OBJS		= $(SRCS:.cpp=.o)
-SRCS		= main.cpp test/vector/vector_constructor.cpp test/vector/vector_iterator.cpp test/vector/vector_capacity.cpp test/vector/vector_access.cpp test/vector/vector_modifier.cpp
+SRCS		= main.cpp test/vector/vector_constructor.cpp test/vector/vector_iterator.cpp test/vector/vector_capacity.cpp test/vector/vector_access.cpp test/vector/vector_assign.cpp test/vector/vector_modifier.cpp
 
 FLAGS		= -Wall -Werror -Wextra -I.
 CC			= clang++
