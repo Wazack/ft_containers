@@ -4,3 +4,6 @@ void vector_capacity();
 void vector_access();
 void vector_assign();
 void vector_modifier();
+void vector_operators();
+
+void stack_tester();

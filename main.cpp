@@ -20,5 +20,10 @@ int main()
     vector_assign();
     std::cout << std::endl << std::endl;
     vector_modifier();
+    std::cout << std::endl << std::endl;
+    vector_operators();
+    std::cout << std::endl << std::endl;
+    stack_tester();
+
     return 0;
 }
