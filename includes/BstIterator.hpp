@@ -6,10 +6,13 @@ namespace ft
 {
 
 template <class Iter>
-class BstIterator
+class BstIterator : public ft::iterator<std::bidirectional_iterator_tag, Iter>
 {
 public:
-	typedef typename Iter::pointer			pointer;
+	typedef typename ft::iterator<std::bidirectional_iterator_tag, Iter>::pointer	pointer;
+	typedef typename ft::iterator<std::bidirectional_iterator_tag, Iter>::reference	reference;
+	// typedef typename iterator_traits<iterator_type>::reference	reference;
+	// typedef typename iterator_traits<iterator_type>::value_type	value_type;
 
 private:
 	pointer _p;
@@ -24,6 +27,8 @@ public:
 		this->_p = rhs._p;
 		return *this;
 	}
+
+	reference operator*() const {return *(_p->value);}
 
 };
 

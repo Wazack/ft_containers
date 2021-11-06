@@ -37,9 +37,11 @@ public:
 	typedef T									value_type;
 	typedef tree<T>								tree;
 	typedef Alloc								allocator_type;
-	typedef tree&								reference;
-	typedef tree*								pointer;
-	typedef BstIterator<Bst<tree> >				iterator;
+	typedef tree&								tree_reference;
+	typedef tree*								tree_pointer;
+	typedef value_type&							reference;
+	typedef value_type*							pointer;
+	typedef BstIterator<tree>				iterator;
 	typedef std::bidirectional_iterator_tag		iterator_category;
 	typedef ptrdiff_t							difference_type;
 
@@ -47,7 +49,7 @@ public:
 
 private:
 	allocator_type	_alloc_tree;
-	pointer			_root;
+	tree_pointer	_root;
 	size_type		_size;
 
 public:
@@ -76,14 +78,14 @@ public:
 	}
 
 private:
-		pointer getNewNode(value_type data, pointer parent){
-			pointer newNode = _alloc_tree.allocate(1);
+		tree_pointer getNewNode(value_type data, tree_pointer parent){
+			tree_pointer newNode = _alloc_tree.allocate(1);
 			_alloc_tree.construct(newNode, tree(data, parent, nullptr, nullptr));
 
 			return newNode;
 		}
 
-		pointer insert_util(pointer bst, value_type data, pointer parent){
+		tree_pointer insert_util(tree_pointer bst, value_type data, tree_pointer parent){
 			if (bst == nullptr)
 				bst = getNewNode(data, parent);
 			else if (data.first < bst->value.first)
@@ -93,7 +95,7 @@ private:
 			return bst;
 		}
 
-		bool already_exist(pointer tree, const value_type& val){ // Replace by ft::pair
+		bool already_exist(tree_pointer tree, const value_type& val){ // Replace by ft::pair
 			while (tree != nullptr)
 			{
 				if (val.first < tree->value.first)

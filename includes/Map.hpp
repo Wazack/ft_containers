@@ -1,7 +1,7 @@
 #include <iostream>
 #include "Utility.hpp"
 #include "vector.hpp"
-#include "MapIterator.hpp"
+#include "Bst.hpp"
 
 namespace ft
 {
@@ -18,8 +18,8 @@ namespace ft
 		typedef typename allocator_type::const_reference	const_reference;
 		typedef typename allocator_type::pointer			pointer;
 		typedef typename allocator_type::const_pointer		const_pointer;
-		typedef	std::bidirectional_iterator_tag				iterator_category;
-		typedef MapIterator<Map>							iterator;
+		typedef Bst<value_type>								base;
+		typedef typename base::iterator						iterator;
 		typedef ptrdiff_t									difference_type;
 		typedef size_t										size_type;
 
@@ -35,84 +35,83 @@ namespace ft
 		};
 
 	private:
-		typedef bst<value_type> tree;
+		base	_tree;
 
 	private:
 		allocator_type _alloc;
 		key_compare _comp;
-		tree *_bst;
 
 	public:
-		explicit Map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _alloc(alloc), _comp(comp), _bst(NULL){}
+		explicit Map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _tree(), _alloc(alloc), _comp(comp){}
 		~Map(){}
 
 		//Iterator
-		iterator begin(){return iterator(begin_tree(_bst));}
+		iterator begin(){return _tree.begin();}
 		
-		iterator end(){return iterator(end_tree(_bst));}
+	// 	iterator end(){return iterator(end_tree(_bst));}
 
-		//Capacity
-		// size_type size() const {return _size;}
+	// 	//Capacity
+	// 	// size_type size() const {return _size;}
 
-		bool empty() const {return _bst == NULL;}
+	// 	bool empty() const {return _bst == NULL;}
 
-		size_type max_size() const {return _alloc.max_size();}
+	// 	size_type max_size() const {return _alloc.max_size();}
 
-		allocator_type get_allocator() const{return _alloc;}
+	// 	allocator_type get_allocator() const{return _alloc;}
 
-		ft::pair<iterator, bool> insert(const value_type& val){
-			_bst = insert_util(_bst, val, NULL);
-			return (ft::pair<iterator, bool>(begin(), true));
-		}
+	// 	ft::pair<iterator, bool> insert(const value_type& val){
+	// 		_bst = insert_util(_bst, val, NULL);
+	// 		return (ft::pair<iterator, bool>(begin(), true));
+	// 	}
 
-	public: //Change to private
+	// public: //Change to private
 
-		void test(){print_test(_bst);}
+	// 	void test(){print_test(_bst);}
 
-		void print_test(tree *bst){
-			if (bst)
-			{
-				print_test(bst->left);
-				std::cout << "[" << bst->data.first << "]" << " [" << bst->data.second << ']' << std::endl;
-				print_test(bst->right);
-			}
-		}
-	private: //<--A retirer
-		//Accessor
-		tree* begin_tree(tree* bst){
-			while (bst->left)
-				bst = bst->left;
-			return (bst);
-		}
+	// 	void print_test(tree *bst){
+	// 		if (bst)
+	// 		{
+	// 			print_test(bst->left);
+	// 			std::cout << "[" << bst->data.first << "]" << " [" << bst->data.second << ']' << std::endl;
+	// 			print_test(bst->right);
+	// 		}
+	// 	}
+	// private: //<--A retirer
+	// 	//Accessor
+	// 	tree* begin_tree(tree* bst){
+	// 		while (bst->left)
+	// 			bst = bst->left;
+	// 		return (bst);
+	// 	}
 
-		tree* end_tree(tree* bst){
-			while (bst->right)
-			{
-				bst = bst->right;
-			}
-			bst = bst->right;
-			return (bst);
-		}
+	// 	tree* end_tree(tree* bst){
+	// 		while (bst->right)
+	// 		{
+	// 			bst = bst->right;
+	// 		}
+	// 		bst = bst->right;
+	// 		return (bst);
+	// 	}
 
-		//Tree utility
-		tree* getNewNode(value_type data, tree* parent){
-			tree* newNode = new tree();
-			newNode->left = newNode->right = NULL;
-			newNode->data = data;
-			newNode->parent = parent;
+	// 	//Tree utility
+	// 	tree* getNewNode(value_type data, tree* parent){
+	// 		tree* newNode = new tree();
+	// 		newNode->left = newNode->right = NULL;
+	// 		newNode->data = data;
+	// 		newNode->parent = parent;
 
-			return newNode;
-		}
+	// 		return newNode;
+	// 	}
 
-		tree* insert_util(tree* bst, value_type data, tree *parent){
-			if (bst == NULL)
-				bst = getNewNode(data, parent);
-			else if (data.first <= bst->data.first)
-				bst->left = insert_util(bst->left, data, bst);
-			else
-				bst->right = insert_util(bst->right, data, bst);
-			return bst;
-		}
+	// 	tree* insert_util(tree* bst, value_type data, tree *parent){
+	// 		if (bst == NULL)
+	// 			bst = getNewNode(data, parent);
+	// 		else if (data.first <= bst->data.first)
+	// 			bst->left = insert_util(bst->left, data, bst);
+	// 		else
+	// 			bst->right = insert_util(bst->right, data, bst);
+	// 		return bst;
+	// 	}
 	};
 
 }
