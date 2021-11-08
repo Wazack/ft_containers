@@ -48,7 +48,7 @@ namespace ft
 			array++;
 			return *this;
 		}
-		
+
 		VectorIterator operator++(int){
 			VectorIterator tmp = *this;
 			this->array++;
@@ -60,7 +60,7 @@ namespace ft
 			__w.array -= n;
 			return __w;
 		}
-		
+
 		VectorIterator operator+(difference_type n) const{
 			VectorIterator __w(*this);
 			__w.array += n;
@@ -71,17 +71,17 @@ namespace ft
 			*this = *this + n;
 			return *this;
 		}
-		
+
 		VectorIterator & operator-=(difference_type n){
 			*this = *this - n;
 			return *this;
 		}
-		
+
 		VectorIterator & operator--(void){
 			array--;
 			return *this;
 		}
-		
+
 		VectorIterator operator--(int){
 			VectorIterator tmp = *this;
 			this->array--;

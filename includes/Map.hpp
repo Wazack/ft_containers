@@ -6,7 +6,7 @@
 namespace ft
 {
 	template <class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<ft::pair<Key, T> > >
-	class Map
+	class map
 	{
 	public:
 		typedef Key											key_type;
@@ -42,16 +42,17 @@ namespace ft
 		key_compare _comp;
 
 	public:
-		explicit Map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _tree(), _alloc(alloc), _comp(comp){}
-		~Map(){}
+		explicit map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _tree(), _alloc(alloc), _comp(comp){}
+		~map(){}
 
-		//Iterator
-		iterator begin(){return _tree.begin();}
-		
-	// 	iterator end(){return iterator(end_tree(_bst));}
+		//Capacity
+	size_type size() const {return _tree.size();}
 
-	// 	//Capacity
-	// 	// size_type size() const {return _size;}
+	ft::pair<iterator, bool> insert(const value_type& val){return _tree.insert(val);}
+
+	iterator end(){return _tree.end();}
+
+	iterator begin(){return _tree.begin();}
 
 	// 	bool empty() const {return _bst == NULL;}
 

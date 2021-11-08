@@ -1,5 +1,5 @@
 #include "includes/vector.hpp"
-#include "includes/Map.hpp"
+#include "includes/map.hpp"
 #include "includes/Utility.hpp"
 #include <vector>
 #include <map>
@@ -30,16 +30,20 @@
 
 int main()
 {
-    // ft::Bst<ft::pair<char, int> > bst;
-    // ft::Bst<ft::pair<char, int> >::iterator it = bst.begin();
-    std::map<char, int> test;
-    std::map<char, int>::iterator it = test.begin();
-    (void)it;
-    ft::Map<char, int> test1;
-    ft::Map<char, int>::iterator it1 = test1.begin();
-    std::cout << (*it).first << std::endl;
-    std::cout << (*it1).first << std::endl;
-    // ft::BstIterator<ft::Bst<ft::tree<ft::pair<char, int> > > > it = bst.begin();
+    ft::map<char, int> test;
+    ft::map<char, int>::iterator it;
+    std::map<char, int> re;
+    std::map<char, int>::iterator itre;
+    ft::pair<ft::map<char,int>::iterator,bool> ret;
+    std::pair<std::map<char,int>::iterator,bool> retre;
 
+    test.insert(ft::pair<char, int>('a', 1));
+    ret = test.insert(ft::pair<char, int>('a', 5));
+    test.insert(ft::pair<char, int>('f', 10));
+    re.insert(std::pair<char, int>('a', 1));
+    retre = re.insert(std::pair<char, int>('a', 5));
+    re.insert(std::pair<char, int>('f', 10));
+    std::cout << ret.first->second << std::endl;
+    std::cout << retre.first->second << std::endl;
     return 0;
 }
