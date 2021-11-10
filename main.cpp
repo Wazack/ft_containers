@@ -31,19 +31,23 @@
 int main()
 {
     ft::map<char, int> test;
-    ft::map<char, int>::iterator it;
     std::map<char, int> re;
-    std::map<char, int>::iterator itre;
-    ft::pair<ft::map<char,int>::iterator,bool> ret;
-    std::pair<std::map<char,int>::iterator,bool> retre;
+    std::map<char, int>::iterator tr;
 
+    test.insert(ft::pair<char, int>('j', 10));
     test.insert(ft::pair<char, int>('a', 1));
-    ret = test.insert(ft::pair<char, int>('a', 5));
     test.insert(ft::pair<char, int>('f', 10));
     re.insert(std::pair<char, int>('a', 1));
-    retre = re.insert(std::pair<char, int>('a', 5));
+    re.insert(std::pair<char, int>('j', 10));
     re.insert(std::pair<char, int>('f', 10));
-    std::cout << ret.first->second << std::endl;
-    std::cout << retre.first->second << std::endl;
+    tr = re.begin();
+    tr = re.insert(tr, std::pair<char, int>('f', 20));
+    tr++;
+    std::cout << tr->first << std::endl;
+    for (std::map<char, int>::iterator it = re.begin(); it != re.end(); ++it)
+    {
+        std::cout << it->first << std::endl;
+    }
+    
     return 0;
 }

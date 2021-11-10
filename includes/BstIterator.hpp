@@ -46,14 +46,27 @@ public:
 	}
 
 	BstIterator & operator++(){
-		tree_pointer buf;
+		tree_pointer prev;
 
-		if (_tree->right == nullptr)
+		if (_tree->right != nullptr)
 		{
-			while (_tree->right == buf)
+			prev = _tree;
+			_tree = _tree->right;
+			while (_tree->left)
+				_tree = _tree->left;
+			return *this;
 		}
+		prev = _tree;
+		_tree = _tree->parent;
+		if (_tree->value.first > prev->value.first)
+			return *this;
+		while (_tree->value.first < prev->value.first)
+		{
+			prev = _tree;
+			_tree = _tree->parent;
+		}
+		return *this;
 	}
-
 };
 
 }
