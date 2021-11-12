@@ -67,6 +67,10 @@ public:
 		}
 		return *this;
 	}
+
+	friend bool operator==(const BstIterator& x, const BstIterator& y){return x._tree == y._tree;}
+	
+	friend bool operator!=(const BstIterator& x, const BstIterator& y){return x._tree != y._tree;}
 };
 
 }

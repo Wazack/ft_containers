@@ -46,73 +46,59 @@ namespace ft
 		~map(){}
 
 		//Capacity
-	size_type size() const {return _tree.size();}
+		size_type size() const {return _tree.size();}
 
-	ft::pair<iterator, bool> insert(const value_type& val){return _tree.insert(val);}
+		// size_type max_size() const{return _tree.max_size();}
 
-	iterator end(){return _tree.end();}
+		bool empty() const{return _tree.empty();}
 
-	iterator begin(){return _tree.begin();}
+		iterator end(){return _tree.end();}
 
-	// 	bool empty() const {return _bst == NULL;}
+		iterator begin(){return _tree.begin();}
 
-	// 	size_type max_size() const {return _alloc.max_size();}
+		//Modifier
+		ft::pair<iterator, bool> insert(const value_type& val){return _tree.insert(val);}
+	
+		iterator insert(iterator hint, const value_type& val){return _tree.insert(hint, val);}
 
-	// 	allocator_type get_allocator() const{return _alloc;}
+		template <class InputIterator>
+		void insert(InputIterator first, InputIterator last){_tree.insert(first, last);}
 
-	// 	ft::pair<iterator, bool> insert(const value_type& val){
-	// 		_bst = insert_util(_bst, val, NULL);
-	// 		return (ft::pair<iterator, bool>(begin(), true));
-	// 	}
+		size_type erase(const key_type& k){
+			value_type to_erase(k, mapped_type());
 
-	// public: //Change to private
+			_tree.erase(to_erase);
+			return 1;
+		}
 
-	// 	void test(){print_test(_bst);}
+		mapped_type& operator[] (const key_type& k){
+			ft::pair<iterator, bool> ret;
+			iterator it;
+			value_type to_find(k, mapped_type());
 
-	// 	void print_test(tree *bst){
-	// 		if (bst)
-	// 		{
-	// 			print_test(bst->left);
-	// 			std::cout << "[" << bst->data.first << "]" << " [" << bst->data.second << ']' << std::endl;
-	// 			print_test(bst->right);
-	// 		}
-	// 	}
-	// private: //<--A retirer
-	// 	//Accessor
-	// 	tree* begin_tree(tree* bst){
-	// 		while (bst->left)
-	// 			bst = bst->left;
-	// 		return (bst);
-	// 	}
+			ret = _tree.find(to_find);
+			if (ret.second == false)
+				return (insert(ft::make_pair(k, mapped_type())).first->second);
+			it = ret.first;
+			return (it->second);
+		}
 
-	// 	tree* end_tree(tree* bst){
-	// 		while (bst->right)
-	// 		{
-	// 			bst = bst->right;
-	// 		}
-	// 		bst = bst->right;
-	// 		return (bst);
-	// 	}
+		//Operation
+		iterator find(const key_type& k){
+			value_type to_find(k, mapped_type());
+			return _tree.find(to_find).first;
+		}
 
-	// 	//Tree utility
-	// 	tree* getNewNode(value_type data, tree* parent){
-	// 		tree* newNode = new tree();
-	// 		newNode->left = newNode->right = NULL;
-	// 		newNode->data = data;
-	// 		newNode->parent = parent;
+		size_type count(const key_type& k) const{
+			value_type to_find(k, mapped_type());
+			ft::pair<iterator, bool> ret;
 
-	// 		return newNode;
-	// 	}
+			ret = _tree.find(to_find);
+			if (ret.second == false)
+				return 0;
+			return 1;
+		}
 
-	// 	tree* insert_util(tree* bst, value_type data, tree *parent){
-	// 		if (bst == NULL)
-	// 			bst = getNewNode(data, parent);
-	// 		else if (data.first <= bst->data.first)
-	// 			bst->left = insert_util(bst->left, data, bst);
-	// 		else
-	// 			bst->right = insert_util(bst->right, data, bst);
-	// 		return bst;
-	// 	}
 	};
 
 }

@@ -30,24 +30,20 @@
 
 int main()
 {
-    ft::map<char, int> test;
-    std::map<char, int> re;
-    std::map<char, int>::iterator tr;
+    std::map<char,int> mymap;
 
-    test.insert(ft::pair<char, int>('j', 10));
-    test.insert(ft::pair<char, int>('a', 1));
-    test.insert(ft::pair<char, int>('f', 10));
-    re.insert(std::pair<char, int>('a', 1));
-    re.insert(std::pair<char, int>('j', 10));
-    re.insert(std::pair<char, int>('f', 10));
-    tr = re.begin();
-    tr = re.insert(tr, std::pair<char, int>('f', 20));
-    tr++;
-    std::cout << tr->first << std::endl;
-    for (std::map<char, int>::iterator it = re.begin(); it != re.end(); ++it)
-    {
+    mymap ['a']=101;
+    mymap ['c']=202;
+    mymap ['b']=404;
+    mymap ['j']=505;
+    mymap ['h']=606;
+    mymap ['i']=606;
+    mymap ['d']=606;
+    mymap ['e']=606;
+
+    mymap.erase('c');
+    for (std::map<char,int>::iterator it = mymap.begin(); it != mymap.end(); ++it)
         std::cout << it->first << std::endl;
-    }
-    
+
     return 0;
 }
