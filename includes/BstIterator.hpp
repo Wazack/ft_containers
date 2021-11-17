@@ -14,9 +14,11 @@ class BstIterator : public ft::iterator<std::bidirectional_iterator_tag, Iter>
 {
 public:
 	typedef ft::iterator<std::bidirectional_iterator_tag, Iter>	iterator_type;
+	typedef std::bidirectional_iterator_tag			iterator_category;
 	typedef typename iterator_type::value_type	value_type;
 	typedef typename iterator_type::pointer	pointer;
 	typedef typename iterator_type::reference	reference;
+	typedef typename iterator_type::difference_type	difference_type;
 
 	typedef tree<value_type>	tree;
 	typedef tree*				tree_pointer;
@@ -33,7 +35,7 @@ public:
 
 	BstIterator & operator=(BstIterator const & rhs){
 		_tree = rhs._tree;
-		_val = rhs._val;
+		// _val = rhs._val;
 		return *this;
 	}
 
@@ -66,6 +68,43 @@ public:
 			_tree = _tree->parent;
 		}
 		return *this;
+	}
+
+	BstIterator operator++(int){
+		BstIterator	tmp(*this);
+
+		++(*this);
+		return tmp;
+	}
+
+	BstIterator & operator--(){
+		tree_pointer prev;
+
+		if (_tree->left != nullptr)
+		{
+			prev = _tree;
+			_tree = _tree->left;
+			while (_tree->right)
+				_tree = _tree->right;
+			return *this;
+		}
+		prev = _tree;
+		_tree = _tree->parent;
+		if (prev->value == value_type() || _tree->value.first < prev->value.first)
+			return *this;
+		while (_tree->value.first > prev->value.first)
+		{
+			prev = _tree;
+			_tree = _tree->parent;
+		}
+		return *this;
+	}
+
+	BstIterator operator--(int){
+		BstIterator tmp(*this);
+
+		++(*this);
+		return tmp;
 	}
 
 	friend bool operator==(const BstIterator& x, const BstIterator& y){return x._tree == y._tree;}

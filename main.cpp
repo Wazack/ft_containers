@@ -30,20 +30,28 @@
 
 int main()
 {
-    std::map<char,int> mymap;
+    ft::map<char,int> mymap;
+    ft::map<char,int>::iterator it;
 
-    mymap ['a']=101;
-    mymap ['c']=202;
-    mymap ['b']=404;
-    mymap ['j']=505;
-    mymap ['h']=606;
-    mymap ['i']=606;
-    mymap ['d']=606;
-    mymap ['e']=606;
+    // insert some values:
+    mymap['a']=10;
+    mymap['b']=20;
+    mymap['c']=30;
+    mymap['d']=40;
+    mymap['e']=50;
+    mymap['f']=60;
 
-    mymap.erase('c');
-    for (std::map<char,int>::iterator it = mymap.begin(); it != mymap.end(); ++it)
-        std::cout << it->first << std::endl;
+    it=mymap.find('b');
+    mymap.erase (it);                   // erasing by iterator
+
+    mymap.erase ('c');                  // erasing by key
+
+    it=mymap.find ('e');
+    mymap.erase ( it, mymap.end() );    // erasing by range
+
+    // show content:
+    for (it=mymap.begin(); it!=mymap.end(); ++it)
+        std::cout << it->first << " => " << it->second << '\n';
 
     return 0;
 }

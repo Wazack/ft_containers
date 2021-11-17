@@ -60,7 +60,7 @@ namespace ft
 		iterator_type _it;
 
 	public:
-		reverse_iterator() : _it(NULL){}
+		reverse_iterator() : _it(){}
 		explicit reverse_iterator(iterator_type it) : _it(it){}
 		reverse_iterator(const reverse_iterator<Iter>& rev_it) : _it(rev_it._it){}
 

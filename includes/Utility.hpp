@@ -19,8 +19,8 @@ struct pair
 
 	pair& operator=(pair const& rhs)
 	{
-		this->first = rhs.first;
-		this->second = rhs.second;
+		first = rhs.first;
+		second = rhs.second;
 		return *this;
 	}
 };
