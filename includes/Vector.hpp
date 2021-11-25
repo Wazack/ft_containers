@@ -31,8 +31,8 @@ namespace ft
 		typedef size_t										size_type;
 
 	private:
-		size_t			_size;
-		size_t 			_capacity;
+		size_type		_size;
+		size_type		_capacity;
 		allocator_type	_alloc;
 		value_type*		array;
 
@@ -42,8 +42,7 @@ namespace ft
 
 			for (size_t i = 0; i < _size; i++)
 				newArray[i] = array[i];
-			if (_size)
-				_alloc.deallocate(array, _capacity);
+			_alloc.deallocate(array, _capacity);
 			array = newArray;
 			_capacity = newCapacity;			
 		}
@@ -93,7 +92,7 @@ namespace ft
 
 	public:
 		//Constructor
-		explicit vector(const allocator_type& alloc = allocator_type()) : _size(0), _capacity(0), _alloc(alloc), array(NULL){}
+		explicit vector(const allocator_type& alloc = allocator_type()) : _size(0), _capacity(0), _alloc(alloc), array(){}
 
 		explicit vector(size_type n, const_reference val = value_type(),
 		const allocator_type& alloc = allocator_type()) : _size(n), _capacity(n), _alloc(alloc){
@@ -124,11 +123,9 @@ namespace ft
 		}
 
 		~vector(){
+			_alloc.deallocate(array, _capacity);
 			if (_capacity)
-			{
-				_alloc.deallocate(array, _capacity);
 				_alloc.destroy(array);
-			}
 		}
 
 		vector& operator=(const vector& rhs){
@@ -185,10 +182,15 @@ namespace ft
 
 		void resize(size_type n, value_type val = value_type()){
 			if (n > _capacity)
-				reAlloc(n);
-			_size = n;
-			for (size_t i = 0; i < n; i++)
+			{
+				if (_capacity * 2 > n)
+					reAlloc(_capacity * 2);
+				else
+					reAlloc(n);
+			}
+			for (size_t i = _size; i < n; i++)
 				_alloc.construct(array + i, val);
+			_size = n;
 		}
 
 		void reserve(size_type n){
@@ -203,9 +205,7 @@ namespace ft
 					array[i] = tmp[i];
 				_capacity = n;
 				for (size_t i = _size; i < n; i++)
-				{
 					_alloc.construct(array + i);
-				}
 			}
 		}
 
@@ -214,7 +214,7 @@ namespace ft
 		template <class InputIterator>
 		typename enable_if<!is_integral<InputIterator>::value>::type
 			assign(InputIterator first, InputIterator last){
-			iterator tmp = first;
+			InputIterator tmp = first;
 			size_t size = 0;
 			reference val = *first;
 
@@ -293,7 +293,7 @@ namespace ft
 			size_t n = 0;
 			size_t idx = 0;
 
-			for (iterator tmp = first; tmp != last; ++tmp)
+			for (InputIterator tmp = first; tmp != last; ++tmp)
 				n++;
 			for (iterator it = this->begin(); it != position; ++it)
 				idx++;

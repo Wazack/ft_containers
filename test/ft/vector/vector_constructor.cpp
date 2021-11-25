@@ -1,4 +1,4 @@
-#include "../../includes/vector.hpp"
+#include "../../../includes/vector.hpp"
 #include <iostream>
 #include <vector>
 
@@ -21,7 +21,6 @@ void vector_constructor()
     first.pop_back(); // erase last value
     s_first.reserve(10);
     s_first.pop_back();
-	std::cout << "\x1B[91m------ft::vector------\033[0m" << std::endl;
     std::cout << "first: ";
     for (ft::vector<int>::iterator it = first.begin(); it != first.end(); ++it)
         std::cout << *it << " ";
@@ -42,23 +41,4 @@ void vector_constructor()
     std::cout << "three.size: " << three.size() << std::endl;
  
 	std::cout << std::endl;
-	std::cout << "\x1B[91m------std::vector------\033[0m" << std::endl;
-    std::cout << "first: ";
-    for (ft::vector<int>::iterator it = first.begin(); it != first.end(); ++it)
-        std::cout << *it << " ";
-    std::cout << std::endl;
-    std::cout << "second: ";
-    for (ft::vector<int>::iterator it = second.begin(); it != second.end(); ++it)
-        std::cout << *it << " ";
-    std::cout << std::endl;
-    std::cout << "three: ";
-    for (ft::vector<int>::iterator it = three.begin(); it != three.end(); ++it)
-        std::cout << *it << " ";
-    std::cout << std::endl;
-    std::cout << "first.capacity: " << first.capacity() << std::endl;
-    std::cout << "first.size: " << first.size() << std::endl;
-    std::cout << "second.capacity: " << second.capacity() << std::endl;
-    std::cout << "second.size: " << second.size() << std::endl;
-    std::cout << "three.capacity: " << three.capacity() << std::endl;
-    std::cout << "three.size: " << three.size() << std::endl;
 }

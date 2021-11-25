@@ -1,4 +1,4 @@
-#include "../../includes/vector.hpp"
+#include "../../../includes/vector.hpp"
 #include <iostream>
 #include <vector>
 
@@ -43,7 +43,7 @@ static void vec()
 	std::cout << "capacity: " << vec.capacity() << std::endl;
 }
 
-void vector_capacity()
+void std_vector_capacity()
 {
 	my_vec();
 	std::cout << std::endl;

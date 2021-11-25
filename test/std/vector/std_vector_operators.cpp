@@ -1,4 +1,4 @@
-#include "../../includes/vector.hpp"
+#include "../../../includes/vector.hpp"
 #include <iostream>
 #include <vector>
 
@@ -57,7 +57,6 @@ static void vec()
 	bar.push_back("Monde");
 	bar.push_back("!");
 	bool ret;
-	std::cout << "\x1B[92m------Vector operators------\033[0m" << std::endl;
 	std::cout << "\x1B[91m------std::vector------\033[0m" << std::endl;
 
 	std::cout << "foo contains:";
@@ -90,7 +89,7 @@ static void vec()
 	std::cout << std::endl;
 }
 
-void vector_operators()
+void std_vector_operators()
 {
 	my_vec();
 	std::cout << std::endl;

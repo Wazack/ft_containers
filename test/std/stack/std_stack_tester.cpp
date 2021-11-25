@@ -1,4 +1,4 @@
-#include "../../includes/stack.hpp"
+#include "../../../includes/stack.hpp"
 #include <iostream>
 #include <stack>
 
@@ -47,7 +47,7 @@ static void stack()
 	std::cout << "empty: " << stack.empty() << std::endl;
 }
 
-void stack_tester()
+void std_stack_tester()
 {
 	my_stack();
 	std::cout << std::endl;

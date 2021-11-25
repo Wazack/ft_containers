@@ -1,4 +1,4 @@
-#include "../../includes/vector.hpp"
+#include "../../../includes/vector.hpp"
 #include <iostream>
 #include <vector>
 
@@ -56,7 +56,7 @@ static void my_vec()
 	std::cout << std::endl;
 }
 
-void vector_iterator()
+void std_vector_iterator()
 {
 	my_vec();
 	std::cout << std::endl;

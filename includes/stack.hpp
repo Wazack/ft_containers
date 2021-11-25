@@ -1,8 +1,9 @@
 #include <iostream>
+#include <deque>
 #include "vector.hpp"
 namespace ft
 {
-template <class T, class Container = ft::vector<T> >
+template <class T, class Container = vector<T> >
 class stack
 {
 public:
@@ -17,6 +18,7 @@ protected:
 
 public:
 	explicit stack(const container_type& cont = container_type()) : c(cont){}
+	stack (const stack& other) : c(other.c){}
 	~stack(){}
 
 	stack& operator=(const stack& other){

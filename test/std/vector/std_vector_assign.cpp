@@ -1,4 +1,4 @@
-#include "../../includes/vector.hpp"
+#include "../../../includes/vector.hpp"
 #include <iostream>
 #include <vector>
 
@@ -61,7 +61,7 @@ static void vec()
 	std::cout << std::endl;	
 }
 
-void vector_assign()
+void std_vector_assign()
 {
 	my_vec();
 	std::cout << std::endl;

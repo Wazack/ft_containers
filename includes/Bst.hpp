@@ -44,7 +44,7 @@ public:
 	typedef tree&									tree_reference;
 	typedef tree*									tree_pointer;
 	typedef BstIterator<value_type>					iterator;
-	typedef BstIterator<const_value_type>			const_iterator;
+	typedef BstConstIterator<value_type>			const_iterator;
 	typedef ft::reverse_iterator<iterator>			reverse_iterator;
 	typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 	typedef std::bidirectional_iterator_tag			iterator_category;
@@ -55,6 +55,7 @@ private:
 	allocator_type	_alloc_tree;
 	tree_pointer	_root;
 	tree_pointer	_last_node;
+	tree_pointer	_begin_node;
 	size_type		_size;
 
 public:
@@ -62,11 +63,33 @@ public:
 		_root = _alloc_tree.allocate(1);
 		_alloc_tree.construct(_root, tree(nullptr, nullptr, nullptr));
 		_last_node = _root;
+		_last_node = _root;
 	}
 
-	~Bst(){		
+	template <class InputIterator>
+	Bst(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()) : _alloc_tree(alloc), _size(0){
+		_root = _alloc_tree.allocate(1);
+		_alloc_tree.construct(_root, tree(nullptr, nullptr, nullptr));
+		_last_node = _root;
+		insert(first, last);
+	}
+
+	Bst(const Bst& x) : _alloc_tree(x._alloc_tree), _size(x._size){
+		_root = _alloc_tree.allocate(1);
+		_alloc_tree.construct(_root, tree(nullptr, nullptr, nullptr));
+		_last_node = _root;
+		insert(x.begin(), x.end());
+	}
+
+	Bst& operator=(const Bst& rhs){
+		_alloc_tree = rhs._alloc_tree;
+		_size = rhs._size;
+		insert(rhs.begin(), rhs.end());
+	}
+
+	~Bst(){
 		del_tree(_root);
-		_alloc_tree.destroy(_root);
+		// _alloc_tree.destroy(_root);
 	}
 
 	size_type size() const{return _size;}
@@ -112,31 +135,49 @@ public:
 	ft::pair<iterator, bool> insert(const value_type& val){
 		iterator it;
 		tree_pointer tmp = _root;
-
-		if (tmp == nullptr)
-			insert_util(&tmp, val, nullptr, &it);
-		else
-		{
-			if (!already_exist(_root, val, &it))
-				return ft::pair<iterator, bool>(it, false);
-			tmp = insert_util(&tmp, val, tmp->parent, &it);
-		}
+		bool ret = true;
+		
+		tmp = insert_util(&tmp, val, &it, &ret);
 		_size++;
-		return ft::pair<iterator, bool>(it, true);
+		return ft::pair<iterator, bool>(it, ret);
+	}
+
+	value_type assign_parent(iterator hint){
+		value_type parent = *hint;
+
+		return parent;
 	}
 
 	iterator insert(iterator hint, const value_type& val){
 		ft::pair<iterator, bool> ret;
-		(void)hint;
-
-		ret = insert(val);
+		ft::pair<tree_pointer, bool> find;
+		value_type pos = *hint;
+		value_type parent;
+		iterator it;
+		tree_pointer tmp = _root;
+		bool boolean = true;
+		
+		if (hint != iterator(min(_root)))
+			--hint;
+		if (val.first > pos.first && val.first > _root->value.first)
+			ret = insert(val);
+		else if (hint != iterator(min(_root)) && assign_parent(hint).first > pos.first)
+			ret = insert(val);
+		else
+		{
+			find = find_tree(pos);
+			if (find.second == false)
+				ret = insert(val);
+			else
+				tmp = insert_util(&(find.first), val, &it, &boolean);
+		}
 		return ret.first;
 	}
 
 	template <class InputIterator>
 	void insert(InputIterator first, InputIterator last){
 		for (; first != last; ++first)
-			insert(*first);
+			insert(end(), *first);
 	}
 
 	void swap(Bst& x){
@@ -168,14 +209,17 @@ public:
 	ft::pair<iterator, bool> find(value_type to_find){
 		tree_pointer tmp = _root;
 
-		while (tmp)
+		if (_size != 0)
 		{
-			if (to_find.first > tmp->value.first)
-				tmp = tmp->right;
-			else if (to_find.first < tmp->value.first)
-				tmp = tmp->left;
-			else
-				return ft::pair<iterator, bool>(iterator(tmp), true);
+			while (tmp)
+			{
+				if (to_find.first > tmp->value.first)
+					tmp = tmp->right;
+				else if (to_find.first < tmp->value.first)
+					tmp = tmp->left;
+				else
+					return ft::pair<iterator, bool>(iterator(tmp), true);
+			}
 		}
 		return (ft::pair<iterator, bool>(iterator(end_tree()), false));
 	}
@@ -201,7 +245,7 @@ public:
 
 		while (tmp)
 		{
-			if (!key_compare()(tmp->value.first, val.first) || tmp->value == value_type())
+			if (!key_compare()(tmp->value.first, val.first))
 			{
 				ret = tmp;
 				tmp = tmp->left;
@@ -301,12 +345,38 @@ public:
 		return (pair<const_iterator, const_iterator>(const_iterator(ret), const_iterator(ret)));
 	}
 
+	void clear(){
+		del_tree(_root);
+		_size = 0;
+		_root = _alloc_tree.allocate(1);
+		_alloc_tree.construct(_root, tree(nullptr, nullptr, nullptr));
+		_last_node = _root;
+	}
+
 	allocator_type get_allocator() const{
 		return (_alloc_tree);
 	}
 
 
 private:
+
+	ft::pair<tree_pointer, bool> find_tree(value_type to_find){
+		tree_pointer tmp = _root;
+
+		if (_size != 0)
+		{
+			while (tmp)
+			{
+				if (to_find.first > tmp->value.first)
+					tmp = tmp->right;
+				else if (to_find.first < tmp->value.first)
+					tmp = tmp->left;
+				else
+					return pair<tree_pointer, bool>(tmp, false);
+			}
+		}
+		return (pair<tree_pointer, bool>(end_tree(), false));
+	}
 
 	tree_pointer erase_util(tree_pointer tree, value_type val, size_type *ret){
 		if (tree == nullptr)
@@ -363,7 +433,7 @@ private:
 			ret = ret->left;
 			brw = true;
 		}
-		if (ret->right && ret->right->value != value_type())
+		if (ret->right && ret->right->value.first != value_type().first)
 		{
 			if (ret->right->value.first < tree->value.first)
 			{
@@ -396,42 +466,65 @@ private:
 			_alloc_tree.construct((*bst)->right, tree(*bst, nullptr, nullptr));
 			_last_node = (*bst)->right;
 		}
-		else if (data.first < (*bst)->value.first)
+		else if (data.first < parent->value.first)
 		{
-			(*bst)->left = _alloc_tree.allocate(1);
-			_alloc_tree.construct((*bst)->left, tree(data, *bst, nullptr, nullptr));
-			*bst = (*bst)->left;
+			(*bst) = _alloc_tree.allocate(1);
+			_alloc_tree.construct(*bst, tree(data, parent, nullptr, nullptr));
+			parent->left = *bst;
 		}
 		else
 		{
-			(*bst)->right = _alloc_tree.allocate(1);
-			_alloc_tree.construct((*bst)->right, tree(data, *bst, nullptr, nullptr));
-			*bst = (*bst)->right;
+			(*bst) = _alloc_tree.allocate(1);
+			_alloc_tree.construct((*bst), tree(data, parent, nullptr, nullptr));
+			parent->right = *bst;
 		}
 	}
 
-	tree_pointer insert_util(tree_pointer *bst, value_type data, tree_pointer parent, iterator *it){
-		if (_size == 0 || ((*bst)->left == nullptr && data.first < (*bst)->value.first) ||
-			((*bst)->right == nullptr && data.first > (*bst)->value.first))
+	// tree_pointer insert_util(tree_pointer *bst, value_type data, tree_pointer parent, iterator *it){
+	// 	if (_size == 0 || ((*bst)->left == nullptr && data.first < (*bst)->value.first) ||
+	// 		((*bst)->right == nullptr && data.first > (*bst)->value.first))
+	// 	{
+	// 		getNewNode(data, parent, bst);
+	// 		*it = iterator(*bst);
+	// 	}
+	// 	else if (data.first < (*bst)->value.first)
+	// 	{
+	// 		*bst = (*bst)->left;
+	// 		insert_util(bst, data, (*bst)->parent, it);
+	// 	}
+	// 	else if (data.first > (*bst)->value.first)
+	// 	{
+	// 		*bst = (*bst)->right;
+	// 		insert_util(bst, data, (*bst)->parent, it);
+	// 	}
+	// 	return *bst;
+	// }
+
+	tree_pointer insert_util(tree_pointer *bst, value_type val, iterator *it, bool *ret)
+	{
+		tree_pointer parent = nullptr;
+
+		while ((*bst) != nullptr && *bst != _last_node)
 		{
-			getNewNode(data, parent, bst);
-			*it = iterator(*bst);
+			parent = (*bst);
+			if ((*bst)->value.first > val.first)
+				(*bst) = (*bst)->left;
+			else if ((*bst)->value.first < val.first)
+				(*bst) = (*bst)->right;
+			else
+			{
+				*ret = false;
+				*it = iterator(*bst);
+				return *bst;
+			}
 		}
-		else if (data.first < (*bst)->value.first)
-		{
-			*bst = (*bst)->left;
-			insert_util(bst, data, (*bst)->parent, it);
-		}
-		else if (data.first > (*bst)->value.first)
-		{
-			*bst = (*bst)->right;
-			insert_util(bst, data, (*bst)->parent, it);
-		}
+		getNewNode(val, parent, bst);
+		*it = iterator(*bst);
 		return *bst;
 	}
 
 	bool already_exist(tree_pointer tree, const value_type& val, iterator *it){
-		while (tree != nullptr)
+		while (tree)
 		{
 			if (val.first < tree->value.first)
 				tree = tree->left;
@@ -446,7 +539,7 @@ private:
 		return true;
 	}
 
-	tree_pointer begin_tree(tree_pointer bst){
+	tree_pointer begin_tree(tree_pointer bst) const{
 		while (bst->left)
 			bst = bst->left;
 		return bst;
@@ -456,13 +549,23 @@ private:
 		return (_last_node);
 	}
 
+	// void del_tree(tree_pointer bst){
+	// 	if (bst)
+	// 	{
+	// 		del_tree(bst->left);
+	// 		_alloc_tree.deallocate(bst, 1);
+	// 		_alloc_tree.destroy(bst);
+	// 		del_tree(bst->right);
+	// 	}
+	// }
+
 	void del_tree(tree_pointer bst){
-		if (bst)
-		{
-			del_tree(bst->left);
-			_alloc_tree.deallocate(bst, 1);
-			del_tree(bst->right);
-		}
+		if (!bst)
+			return ;
+		del_tree(bst->left);
+		del_tree(bst->right);
+		_alloc_tree.deallocate(bst, 1);
+		_alloc_tree.destroy(bst);
 	}
 };
 

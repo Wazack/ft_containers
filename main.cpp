@@ -3,55 +3,183 @@
 #include "includes/Utility.hpp"
 #include <vector>
 #include <map>
+#include <deque>
 #include <stack>
 #include "includes/Bst.hpp"
-#include "test/test.hpp"
-
-// int main()
-// {
-//     vector_constructor();
-//     std::cout << std::endl << std::endl;
-//     vector_iterator();
-//     std::cout << std::endl << std::endl;
-//     vector_capacity();
-//     std::cout << std::endl << std::endl;
-//     vector_access();
-//     std::cout << std::endl << std::endl;
-//     vector_assign();
-//     std::cout << std::endl << std::endl;
-//     vector_modifier();
-//     std::cout << std::endl << std::endl;
-//     vector_operators();
-//     std::cout << std::endl << std::endl;
-//     stack_tester();
-
-//     return 0;
-// }
+#include "test/ft/test.hpp"
 
 int main()
 {
-    ft::map<char,int> mymap;
-    ft::map<char,int>::iterator it;
-
-    // insert some values:
-    mymap['a']=10;
-    mymap['b']=20;
-    mymap['c']=30;
-    mymap['d']=40;
-    mymap['e']=50;
-    mymap['f']=60;
-
-    it=mymap.find('b');
-    mymap.erase (it);                   // erasing by iterator
-
-    mymap.erase ('c');                  // erasing by key
-
-    it=mymap.find ('e');
-    mymap.erase ( it, mymap.end() );    // erasing by range
-
-    // show content:
-    for (it=mymap.begin(); it!=mymap.end(); ++it)
-        std::cout << it->first << " => " << it->second << '\n';
+    // vector_constructor();
+    // std::cout << std::endl << std::endl;
+    // vector_iterator();
+    // std::cout << std::endl << std::endl;
+    // vector_capacity();
+    // std::cout << std::endl << std::endl;
+    // vector_access();
+    // std::cout << std::endl << std::endl;
+    // vector_assign();
+    // std::cout << std::endl << std::endl;
+    // vector_modifier();
+    // std::cout << std::endl << std::endl;
+    // vector_operators();
+    // std::cout << std::endl << std::endl;
+    // stack_tester();
+    // std::cout << std::endl << std::endl;
+    // map_constructor();
+    // std::cout << std::endl << std::endl;
+    // map_capacity();
+    // std::cout << std::endl << std::endl;
+    // map_insert();
+    // std::cout << std::endl << std::endl;
+    // map_modifier();
+    // std::cout << std::endl << std::endl;
+    // map_observers();
+    // std::cout << std::endl << std::endl;
+    // map_operations();
+    // std::cout << std::endl << std::endl;
+    map_iterator();
+    // std::cout << std::endl << std::endl;
+    // map_operator();
 
     return 0;
 }
+
+// #include <iostream>
+// #include <string>
+// #include <deque>
+// // #if 1 //CREATE A REAL STL EXAMPLE
+// // 	#include <map>
+// // 	#include <stack>
+// // 	#include <vector>
+// // 	namespace ft = std;
+// // #else
+// 	#include <includes/map.hpp>
+// 	#include <includes/stack.hpp>
+// 	#include <includes/vector.hpp>
+// // #endif
+
+// #include <stdlib.h>
+
+// #define MAX_RAM 4294967296
+// #define BUFFER_SIZE 4096
+// struct Buffer
+// {
+// 	int idx;
+// 	char buff[BUFFER_SIZE];
+// };
+
+
+// #define COUNT (MAX_RAM / (int)sizeof(Buffer))
+
+// template<typename T>
+// class MutantStack : public ft::stack<T>
+// {
+// public:
+// 	MutantStack() {}
+// 	MutantStack(const MutantStack<T>& src) { *this = src; }
+// 	MutantStack<T>& operator=(const MutantStack<T>& rhs) 
+// 	{
+// 		this->c = rhs.c;
+// 		return *this;
+// 	}
+// 	~MutantStack() {}
+
+// 	typedef typename ft::stack<T>::container_type::iterator iterator;
+
+// 	iterator begin() { return this->c.begin(); }
+// 	iterator end() { return this->c.end(); }
+// };
+
+// int main(int argc, char** argv) {
+// 	if (argc != 2)
+// 	{
+// 		std::cerr << "Usage: ./test seed" << std::endl;
+// 		std::cerr << "Provide a seed please" << std::endl;
+// 		std::cerr << "Count value:" << COUNT << std::endl;
+// 		return 1;
+// 	}
+// 	const int seed = atoi(argv[1]);
+// 	srand(seed);
+
+// 	ft::vector<std::string> vector_str;
+// 	ft::vector<int> vector_int;
+// 	ft::stack<int> stack_int;
+// 	ft::vector<Buffer> vector_buffer;
+// 	ft::stack<Buffer, std::deque<Buffer> > stack_deq_buffer;
+// 	ft::map<int, int> map_int;
+
+//     std::cout << COUNT << std::endl;
+// 	for (int i = 0; i < COUNT; i++)
+// 	{
+// 		vector_buffer.push_back(Buffer());
+// 	}
+
+// 	for (int i = 0; i < COUNT; i++)
+// 	{
+// 		const int idx = rand() % COUNT;
+// 		vector_buffer[idx].idx = 5;
+// 	}
+// 	ft::vector<Buffer>().swap(vector_buffer);
+
+// 	try
+// 	{
+// 		for (int i = 0; i < COUNT; i++)
+// 		{
+// 			const int idx = rand() % COUNT;
+// 			vector_buffer.at(idx);
+// 			std::cerr << "Error: THIS VECTOR SHOULD BE EMPTY!!" <<std::endl;
+// 		}
+// 	}
+// 	catch(const std::exception& e)
+// 	{
+// 		//NORMAL ! :P
+// 	}
+
+// 	for (int i = 0; i < COUNT; ++i)
+// 	{
+// 		map_int.insert(ft::make_pair(rand(), rand()));
+// 	}
+
+// 	int sum = 0;
+// 	for (int i = 0; i < 10000; i++)
+// 	{
+// 		int access = rand();
+// 		sum += map_int[access];
+// 	}
+// 	std::cout << "should be constant with the same seed: " << sum << std::endl;
+
+// 	{
+// 		ft::map<int, int> copy;
+//         // copy = map_int;
+// 	}
+// 	MutantStack<char> iterable_stack;
+// 	for (char letter = 'a'; letter <= 'z'; letter++)
+// 		iterable_stack.push(letter);
+// 	for (MutantStack<char>::iterator it = iterable_stack.begin(); it != iterable_stack.end(); it++)
+// 	{
+// 		std::cout << *it;
+// 	}
+// 	std::cout << std::endl;
+//     std::cout << "bjr" << std::endl;
+// 	return (0);
+// }
+
+// int main()
+// {
+// 	ft::map<char, int> m;
+// 	ft::map<char, int> g;
+
+// 	m.insert(ft::pair<char, int>('a', 10));
+// 	m.insert(ft::pair<char, int>('-', 20));
+// 	m.insert(ft::pair<char, int>('b', 30));
+// 	g.insert(ft::pair<char, int>('g', 40));
+// 	g.insert(ft::pair<char, int>('h', 40));
+// 	m.insert(m.begin(), ft::pair<char,int>('h', 40));
+// 	m.insert(ft::pair<char, int>('g', 40));
+
+// 	for (ft::map<char,int>::iterator it = m.begin(); it != m.end(); ++it)
+// 		std::cout << it->first << std::endl;
+
+// 	return 0;
+// }

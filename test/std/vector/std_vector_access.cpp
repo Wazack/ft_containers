@@ -1,4 +1,4 @@
-#include "../../includes/vector.hpp"
+#include "../../../includes/vector.hpp"
 #include <iostream>
 #include <vector>
 
@@ -63,7 +63,7 @@ static void vec()
 	}
 }
 
-void vector_access()
+void std_vector_access()
 {
 	my_vec();
 	std::cout << std::endl;
