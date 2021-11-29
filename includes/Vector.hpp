@@ -311,49 +311,26 @@ namespace ft
 
 		//ERASE
 		iterator erase(iterator position){
-			size_t i = 0;
-			size_t y = 0;
-			size_t ret = 0;
-			value_type* newArray;
+			difference_type ps = position - begin();
+			pointer p = array + ps;
 
-			for (iterator it = this->begin(); it != position; ++it)
-				ret++;
-			newArray = _alloc.allocate(_capacity);
-			for (iterator it = this->begin(); it != this->end(); ++it)
-			{
-				if (it != position)
-					newArray[i++] = array[y];
-				y++;
-			}
-			_alloc.deallocate(array, _capacity);
+			if (position + 1 != end())
+				for (; (size_type)ps < _size; ps++)
+					array[ps] = array[ps + 1];
+			_alloc.destroy(array + _size);		
 			_size--;
-			array = newArray;
-			return (iterator(array) + ret);
+			return (iterator(p));
 		}
 
 		iterator erase(iterator first, iterator last){
-			value_type* newArray;
-			size_t y = 0;
-			size_t i = 0;
-			size_t ret = 0;
+			pointer p = array + (first - begin());
 
-			for (iterator it = this->begin(); it != first; ++it)
-				ret++;
-			newArray = _alloc.allocate(_capacity);
-			for (iterator it = this->begin(); it != this->end(); ++it)
+			last--;
+			for (; first - 1 != last; --last)
 			{
-				while (it == first && first != last)
-				{
-					y++;
-					first++;
-					it++;
-				}
-				newArray[i++] = array[y++];
+				erase(last);
 			}
-			_alloc.deallocate(array, _capacity);
-			_size = i;
-			array = newArray;
-			return (iterator(array) + ret);
+			return (iterator(p));
 		}
 			//SWAP
 		void swap(vector& x){
