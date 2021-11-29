@@ -327,9 +327,7 @@ namespace ft
 
 			last--;
 			for (; first - 1 != last; --last)
-			{
 				erase(last);
-			}
 			return (iterator(p));
 		}
 			//SWAP
