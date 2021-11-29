@@ -34,7 +34,7 @@ namespace ft
 		size_type		_size;
 		size_type		_capacity;
 		allocator_type	_alloc;
-		value_type*		array;
+		pointer		array;
 
 	private:
 		void reAlloc(size_type newCapacity){
@@ -140,17 +140,17 @@ namespace ft
 
 		//Iterator
 		iterator begin(){
-			return (iterator(array));
+			return (array);
 		}
-		
+
 		const_iterator begin() const{
-			return (const_iterator(array));
+			return (array);
 		}
-		
+
 		iterator end(){
 			return (iterator(array + _size));
 		}
-		
+
 		const_iterator end() const{
 			return (const_iterator(array + _size));
 		}
@@ -158,7 +158,7 @@ namespace ft
 		reverse_iterator rbegin(){
 			return reverse_iterator(end());
 		}
-		
+
 		const_reverse_iterator rbegin() const{
 			return const_reverse_iterator(end());
 		}
@@ -166,7 +166,7 @@ namespace ft
 		reverse_iterator rend(){
 			return reverse_iterator(begin());
 		}
-		
+
 		const_reverse_iterator rend() const{
 			return const_reverse_iterator(begin());
 		}

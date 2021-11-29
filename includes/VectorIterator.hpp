@@ -1,6 +1,8 @@
 #ifndef VECTORITERATOR_HPP
 #define VECTORITERATOR_HPP
 
+#include <type_traits>
+
 #include <iostream>
 #include "Iterator.hpp"
 
@@ -18,35 +20,37 @@ public:
 	typedef	typename iterator_traits<iterator_type>::reference 			reference;
 
 private:
-	pointer array;
+	iterator_type _i;
 
 public:
-	VectorIterator() : array(NULL){}
-	VectorIterator(pointer ptr) : array(ptr){}
-	VectorIterator(VectorIterator const & src) : array(src.array){}
+	VectorIterator() : _i(){}
+	VectorIterator(iterator_type u) : _i(u){}
+	template <class U>
+	VectorIterator(VectorIterator<U> const & src) : _i(src.base()){}
 	~VectorIterator(){}
 
-	VectorIterator & operator=(VectorIterator const & rhs){
-		this->array = rhs.array;
+	template <class U>
+	VectorIterator & operator=(const VectorIterator<U> & rhs){
+		this->_i = rhs.base();
 		return *this;
 	}
 
-	pointer base() const {return array;}
+	iterator_type base() const {return _i;}
 
 	reference operator*(void){
-		return (*array);
+		return (*_i);
 	}
 
 	reference operator[](int index){
-		return *(array + index);
+		return *(_i + index);
 	}
 
 	pointer operator->(void){
-		return (array);
+		return (_i);
 	}
 
 	VectorIterator & operator++(void){
-		array++;
+		_i++;
 		return *this;
 	}
 
@@ -67,7 +71,7 @@ public:
 	}
 
 	VectorIterator & operator+=(difference_type n){
-		array += n;
+		_i += n;
 		return *this;
 	}
 
@@ -77,7 +81,7 @@ public:
 	}
 
 	VectorIterator & operator--(void){
-		array--;
+		_i--;
 		return *this;
 	}
 

@@ -98,13 +98,8 @@ public:
 
 	template <class InputIterator>
 	void insert(InputIterator first, InputIterator last){
-		size_type i = 0;
-
 		for (; first != last; ++first)
-		{
 			_tree.insert(*first);
-			std::cout << i++ << std::endl;
-		}
 	}
 
 	void erase(iterator position){

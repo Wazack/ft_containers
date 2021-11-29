@@ -4,9 +4,9 @@
 
 static void my_map()
 {
-	std::map<char, int> foo;
-	std::map<char, int>::iterator it;
-	std::pair<std::map<char,int>::iterator,std::map<char,int>::iterator> ret;
+	ft::map<char, int> foo;
+	ft::map<char, int>::iterator it;
+	ft::pair<ft::map<char,int>::iterator,ft::map<char,int>::iterator> ret;
 
 	foo['a'] = 100;
 	foo['d'] = 200;

@@ -10,7 +10,7 @@ STD			=	test/std/vector/std_vector_constructor.cpp test/std/vector/std_vector_it
 test/std/vector/std_vector_capacity.cpp test/std/vector/std_vector_access.cpp test/std/vector/std_vector_assign.cpp \
 test/std/vector/std_vector_modifier.cpp test/std/vector/std_vector_operators.cpp test/std/stack/std_stack_tester.cpp \
 test/std/map/std_map_constructor.cpp test/std/map/std_map_capacity.cpp test/std/map/std_map_insert.cpp test/std/map/std_map_modifier.cpp \
-test/std/map/std_map_observers.cpp test/std/map/std_map_operations.cpp test/std/map/std_map_iterator.cpp test/std/map/std_map_operator.cpp std_main.cpp
+test/std/map/std_map_observers.cpp test/std/map/std_map_operations.cpp test/std/map/std_map_iterator.cpp test/std/map/std_map_operator.cpp main.cpp
 SRCS		= $(FT) $(STD)
 
 FLAGS		= -Wall -Werror -Wextra -I.
