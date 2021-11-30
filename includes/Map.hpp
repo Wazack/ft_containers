@@ -50,9 +50,7 @@ public:
 	map(InputIterator first, InputIterator last, const key_compare& comp = key_compare(),
 	const allocator_type& alloc = allocator_type()) : _tree(first, last), _alloc(alloc), _comp(comp){}
 
-	map(const map& x) : _alloc(x._alloc), _comp(x._comp){
-		insert(x.begin(), x.end());
-	}
+	map(const map& x) : _tree(x._tree), _alloc(x._alloc), _comp(x._comp){}
 
 	map& operator=(const map& rhs){
 		if (this != &rhs)
@@ -60,7 +58,7 @@ public:
 			clear();
 			_alloc = rhs._alloc;
 			_comp = rhs._comp;
-			insert(rhs.begin(), rhs.end());
+			_tree = rhs._tree;
 		}
 
 		return *this;
@@ -97,10 +95,7 @@ public:
 	iterator insert(iterator hint, const value_type& val){return _tree.insert(hint, val);}
 
 	template <class InputIterator>
-	void insert(InputIterator first, InputIterator last){
-		for (; first != last; ++first)
-			_tree.insert(*first);
-	}
+	void insert(InputIterator first, InputIterator last){return _tree.insert(first, last);}
 
 	void erase(iterator position){
 		_tree.erase(*position);

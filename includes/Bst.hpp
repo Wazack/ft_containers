@@ -63,7 +63,7 @@ public:
 		_root = _alloc_tree.allocate(1);
 		_alloc_tree.construct(_root, tree(nullptr, nullptr, nullptr));
 		_last_node = _root;
-		_last_node = _root;
+		_begin_node = _root;
 	}
 
 	template <class InputIterator>
@@ -75,21 +75,21 @@ public:
 	}
 
 	Bst(const Bst& x) : _alloc_tree(x._alloc_tree), _size(x._size){
-		_root = _alloc_tree.allocate(1);
-		_alloc_tree.construct(_root, tree(nullptr, nullptr, nullptr));
-		_last_node = _root;
-		insert(x.begin(), x.end());
+		_root = deep_copy(x._root, nullptr);
+		_begin_node = min(_root);
+		_last_node = end_tree(_root);
 	}
 
 	Bst& operator=(const Bst& rhs){
 		_alloc_tree = rhs._alloc_tree;
 		_size = rhs._size;
-		insert(rhs.begin(), rhs.end());
+		_begin_node = rhs._begin_node;
+		_last_node = rhs._last_node;
+		_root = deep_copy(rhs._root, nullptr);
 	}
 
 	~Bst(){
 		del_tree(_root);
-		// _alloc_tree.destroy(_root);
 	}
 
 	size_type size() const{return _size;}
@@ -115,11 +115,11 @@ public:
 	}
 
 	iterator end(){
-		return (iterator(end_tree()));
+		return (iterator(end_tree(_root)));
 	}
 
 	const_iterator end() const{
-		return const_iterator(end_tree());
+		return const_iterator(end_tree(_root));
 	}
 
 	reverse_iterator rend(){
@@ -169,13 +169,16 @@ public:
 			if (find.second == false)
 				ret = insert(val);
 			else
+			{
 				tmp = insert_util(&(find.first), val, &it, &boolean);
+			}
 		}
 		return ret.first;
 	}
 
 	template <class InputIterator>
-	void insert(InputIterator first, InputIterator last){
+	void insert(InputIterator first, InputIterator last)
+	{
 		for (; first != last; ++first)
 			insert(end(), *first);
 	}
@@ -221,7 +224,7 @@ public:
 					return ft::pair<iterator, bool>(iterator(tmp), true);
 			}
 		}
-		return (ft::pair<iterator, bool>(iterator(end_tree()), false));
+		return (ft::pair<iterator, bool>(iterator(end_tree(_root)), false));
 	}
 	
 	ft::pair<const_iterator, bool> find(value_type to_find) const{
@@ -236,7 +239,7 @@ public:
 			else
 				return ft::pair<const_iterator, bool>(const_iterator(tmp), true);
 		}
-		return (ft::pair<const_iterator, bool>(const_iterator(end_tree()), false));
+		return (ft::pair<const_iterator, bool>(const_iterator(end_tree(_root)), false));
 	}
 
 	iterator lower_bound(value_type val){
@@ -308,7 +311,7 @@ public:
 	}
 
 	pair<iterator, iterator> equal_range(value_type val){
-		tree_pointer ret = end_tree();
+		tree_pointer ret = end_tree(_root);
 		tree_pointer tmp = _root;
 
 		while (tmp)
@@ -360,6 +363,19 @@ public:
 
 private:
 
+	tree_pointer deep_copy(tree_pointer t, tree_pointer parent)
+	{
+		if (!t)
+			return nullptr;
+		tree_pointer new_tree = _alloc_tree.allocate(1);
+		_alloc_tree.construct(new_tree, tree(t->value, nullptr, nullptr, nullptr));
+		// _size++;
+		new_tree->parent = parent;
+		new_tree->right = deep_copy(t->right, new_tree);
+		new_tree->left = deep_copy(t->left, new_tree);
+		return (new_tree);
+	}
+
 	ft::pair<tree_pointer, bool> find_tree(value_type to_find){
 		tree_pointer tmp = _root;
 
@@ -375,7 +391,7 @@ private:
 					return pair<tree_pointer, bool>(tmp, false);
 			}
 		}
-		return (pair<tree_pointer, bool>(end_tree(), false));
+		return (pair<tree_pointer, bool>(end_tree(_root), false));
 	}
 
 	tree_pointer erase_util(tree_pointer tree, value_type val, size_type *ret){
@@ -480,26 +496,6 @@ private:
 		}
 	}
 
-	// tree_pointer insert_util(tree_pointer *bst, value_type data, tree_pointer parent, iterator *it){
-	// 	if (_size == 0 || ((*bst)->left == nullptr && data.first < (*bst)->value.first) ||
-	// 		((*bst)->right == nullptr && data.first > (*bst)->value.first))
-	// 	{
-	// 		getNewNode(data, parent, bst);
-	// 		*it = iterator(*bst);
-	// 	}
-	// 	else if (data.first < (*bst)->value.first)
-	// 	{
-	// 		*bst = (*bst)->left;
-	// 		insert_util(bst, data, (*bst)->parent, it);
-	// 	}
-	// 	else if (data.first > (*bst)->value.first)
-	// 	{
-	// 		*bst = (*bst)->right;
-	// 		insert_util(bst, data, (*bst)->parent, it);
-	// 	}
-	// 	return *bst;
-	// }
-
 	tree_pointer insert_util(tree_pointer *bst, value_type val, iterator *it, bool *ret)
 	{
 		tree_pointer parent = nullptr;
@@ -545,8 +541,10 @@ private:
 		return bst;
 	}
 
-	tree_pointer end_tree() const{
-		return (_last_node);
+	tree_pointer end_tree(tree_pointer bst) const{
+		while (bst->right)
+			bst = bst->right;
+		return (bst);
 	}
 
 	// void del_tree(tree_pointer bst){

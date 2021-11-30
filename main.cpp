@@ -45,9 +45,9 @@ int main()
     return 0;
 }
 
-// #include <iostream>
-// #include <string>
-// #include <deque>
+// // #include <iostream>
+// // #include <string>
+// // #include <deque>
 // // #if 1 //CREATE A REAL STL EXAMPLE
 // // 	#include <map>
 // // 	#include <stack>
@@ -109,7 +109,6 @@ int main()
 // 	ft::stack<Buffer, std::deque<Buffer> > stack_deq_buffer;
 // 	ft::map<int, int> map_int;
 
-//     std::cout << COUNT << std::endl;
 // 	for (int i = 0; i < COUNT; i++)
 // 	{
 // 		vector_buffer.push_back(Buffer());
@@ -135,7 +134,7 @@ int main()
 // 	{
 // 		//NORMAL ! :P
 // 	}
-
+	
 // 	for (int i = 0; i < COUNT; ++i)
 // 	{
 // 		map_int.insert(ft::make_pair(rand(), rand()));
@@ -150,8 +149,7 @@ int main()
 // 	std::cout << "should be constant with the same seed: " << sum << std::endl;
 
 // 	{
-// 		ft::map<int, int> copy;
-//         // copy = map_int;
+// 		ft::map<int, int> copy = map_int;
 // 	}
 // 	MutantStack<char> iterable_stack;
 // 	for (char letter = 'a'; letter <= 'z'; letter++)
@@ -161,25 +159,5 @@ int main()
 // 		std::cout << *it;
 // 	}
 // 	std::cout << std::endl;
-//     std::cout << "bjr" << std::endl;
 // 	return (0);
-// }
-
-// int main()
-// {
-// 	ft::map<char, int> m;
-// 	ft::map<char, int> g;
-
-// 	m.insert(ft::pair<char, int>('a', 10));
-// 	m.insert(ft::pair<char, int>('-', 20));
-// 	m.insert(ft::pair<char, int>('b', 30));
-// 	g.insert(ft::pair<char, int>('g', 40));
-// 	g.insert(ft::pair<char, int>('h', 40));
-// 	m.insert(m.begin(), ft::pair<char,int>('h', 40));
-// 	m.insert(ft::pair<char, int>('g', 40));
-
-// 	for (ft::map<char,int>::iterator it = m.begin(); it != m.end(); ++it)
-// 		std::cout << it->first << std::endl;
-
-// 	return 0;
 // }
